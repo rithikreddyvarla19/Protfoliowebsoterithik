@@ -120,7 +120,8 @@ export const education = [
     school: "University of Central Florida",
     location: "Orlando, Florida",
     status: "Graduate Student",
-    gpa: "4.0 GPA",
+    period: "Aug 2024 - May 2026",
+    gpa: "GPA: 4.0/4.0",
     coursework: [
       "Database Systems",
       "Data Mining",
@@ -134,6 +135,28 @@ export const education = [
     details: [
       "I am pursuing graduate study in computer science while building practical data engineering, cloud, and analytics projects.",
       "My coursework and project work strengthen the foundations I use for scalable data systems, analytics pipelines, and production-minded engineering."
+    ]
+  },
+  {
+    degree: "B.Tech in Computer Science & Engineering (IoT)",
+    school: "GITAM University",
+    location: "Hyderabad, India",
+    status: "Undergraduate Degree",
+    period: "Aug 2020 - May 2024",
+    gpa: "GPA not listed",
+    coursework: [
+      "Database Management Systems",
+      "Data Structures",
+      "Python Programming",
+      "Internet of Things",
+      "Cloud Computing",
+      "Data Analytics",
+      "Computer Networks",
+      "Software Engineering"
+    ],
+    details: [
+      "I completed my undergraduate degree in computer science and engineering with an IoT focus.",
+      "This foundation helped me build toward data engineering, cloud systems, and analytics-focused problem solving."
     ]
   }
 ];
