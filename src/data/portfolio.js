@@ -143,7 +143,7 @@ export const education = [
     location: "Hyderabad, India",
     status: "Undergraduate Degree",
     period: "Aug 2020 - May 2024",
-    gpa: "GPA not listed",
+    gpa: "",
     coursework: [
       "Database Management Systems",
       "Data Structures",
