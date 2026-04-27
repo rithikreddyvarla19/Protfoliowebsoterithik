@@ -121,9 +121,19 @@ export const education = [
     location: "Orlando, Florida",
     status: "Graduate Student",
     gpa: "4.0 GPA",
+    coursework: [
+      "Database Systems",
+      "Data Mining",
+      "Big Data Analytics",
+      "Machine Learning",
+      "Cloud Data Platforms",
+      "Data Warehousing",
+      "Data Visualization",
+      "Distributed Data Processing"
+    ],
     details: [
       "I am pursuing graduate study in computer science while building practical data engineering, cloud, and analytics projects.",
-      "My coursework and project work strengthen the foundations I use for scalable systems, data pipelines, and production-minded engineering."
+      "My coursework and project work strengthen the foundations I use for scalable data systems, analytics pipelines, and production-minded engineering."
     ]
   }
 ];

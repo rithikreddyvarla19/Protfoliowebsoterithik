@@ -346,6 +346,18 @@ function Education() {
                 <p key={detail} className="leading-8">{detail}</p>
               ))}
             </div>
+            {item.coursework?.length > 0 && (
+              <div className="mt-6">
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Coursework</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {item.coursework.map((course) => (
+                    <span key={course} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-slate-950/50 dark:text-slate-100">
+                      {course}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.article>
         ))}
       </div>
