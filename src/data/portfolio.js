@@ -16,6 +16,7 @@ import {
 export const navItems = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
+  { id: "education", label: "Education" },
   { id: "skills", label: "Skills" },
   { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
@@ -23,10 +24,10 @@ export const navItems = [
 ];
 
 export const recruiterHighlights = [
-  "4.0 GPA M.S. Computer Science candidate at UCF",
-  "Production data engineering experience across AWS, Snowflake, SQL, Python, and PySpark",
-  "Owns full ETL/ELT delivery: modeling, quality checks, monitoring, and BI enablement",
-  "Quantified impact across reliability, error reduction, throughput, and mentoring"
+  "I am an M.S. Computer Science candidate at UCF with a 4.0 GPA",
+  "I have production data engineering experience across AWS, Snowflake, SQL, Python, and PySpark",
+  "I own full ETL/ELT delivery: modeling, quality checks, monitoring, and BI enablement",
+  "I bring quantified impact across reliability, error reduction, throughput, and mentoring"
 ];
 
 export const skillGroups = [
@@ -109,6 +110,20 @@ export const experiences = [
       "Created repeatable ingestion and transformation workflows.",
       "Documented data logic and improved handoff quality for downstream users.",
       "Supported BI reporting through cleaned, validated, and modeled datasets."
+    ]
+  }
+];
+
+export const education = [
+  {
+    degree: "M.S. in Computer Science",
+    school: "University of Central Florida",
+    location: "Orlando, Florida",
+    status: "Graduate Student",
+    gpa: "4.0 GPA",
+    details: [
+      "I am pursuing graduate study in computer science while building practical data engineering, cloud, and analytics projects.",
+      "My coursework and project work strengthen the foundations I use for scalable systems, data pipelines, and production-minded engineering."
     ]
   }
 ];

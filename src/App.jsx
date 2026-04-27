@@ -17,6 +17,7 @@ import {
 import {
   certifications,
   contactLinks,
+  education,
   experiences,
   metrics,
   navItems,
@@ -304,14 +305,51 @@ function About() {
         <SectionHeading kicker="About" title="Data engineering depth with analytics empathy." />
         <div className="grid gap-5 text-lg leading-8 text-slate-600 dark:text-slate-300">
           <p>
-            Rithik is pursuing an M.S. in Computer Science at the University of Central Florida with a 4.0 GPA while building a practical portfolio across data engineering, cloud platforms, and business intelligence.
+            I am Rithik Reddy Varla, an M.S. Computer Science student at the University of Central Florida with a 4.0 GPA. I am building a practical portfolio across data engineering, cloud platforms, and business intelligence.
           </p>
           <p>
-            His work centers on scalable ETL/ELT pipelines, AWS and Snowflake data platforms, data modeling, data quality, and BI systems that turn operational data into trusted reporting and analytics.
+            My work centers on scalable ETL/ELT pipelines, AWS and Snowflake data platforms, data modeling, data quality, and BI systems that turn operational data into trusted reporting and analytics.
           </p>
         </div>
       </div>
     </motion.section>
+  );
+}
+
+function Education() {
+  return (
+    <section id="education" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
+      <SectionHeading kicker="Education" title="Graduate study grounded in practical engineering." className="mb-8" />
+      <div className="grid gap-5">
+        {education.map((item) => (
+          <motion.article
+            key={`${item.school}-${item.degree}`}
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            className="rounded-3xl border border-slate-200 bg-white/82 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10"
+          >
+            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-teal-700 dark:text-teal-300">{item.status}</p>
+                <h3 className="mt-2 text-3xl font-black text-slate-950 dark:text-white">{item.degree}</h3>
+                <p className="mt-2 text-lg font-bold text-slate-700 dark:text-slate-200">{item.school}</p>
+                <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">{item.location}</p>
+              </div>
+              <span className="w-fit rounded-full bg-teal-50 px-4 py-2 text-sm font-black text-teal-700 dark:bg-teal-950/40 dark:text-teal-200">
+                {item.gpa}
+              </span>
+            </div>
+            <div className="mt-5 grid gap-3 text-slate-600 dark:text-slate-300">
+              {item.details.map((detail) => (
+                <p key={detail} className="leading-8">{detail}</p>
+              ))}
+            </div>
+          </motion.article>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -683,6 +721,7 @@ export default function App() {
       <main>
         <Hero />
         <About />
+        <Education />
         <Skills />
         <Experience />
         <Projects />
