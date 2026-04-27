@@ -64,6 +64,18 @@ export const skillGroups = [
 
 export const experiences = [
   {
+    role: "Graduate Teaching Assistant",
+    company: "University of Central Florida",
+    period: "M.S. Computer Science",
+    icon: GraduationCap,
+    impact: "Mentored 150+ students while maintaining a 4.0 GPA in graduate coursework.",
+    bullets: [
+      "Supported instruction, grading, and technical mentoring for computer science students.",
+      "Explained programming and data concepts with clarity for diverse learning styles.",
+      "Balanced academic excellence with professional data engineering growth."
+    ]
+  },
+  {
     role: "Data Engineer 1",
     company: "Asset Care",
     period: "Production Data Platforms",
@@ -97,18 +109,6 @@ export const experiences = [
       "Created repeatable ingestion and transformation workflows.",
       "Documented data logic and improved handoff quality for downstream users.",
       "Supported BI reporting through cleaned, validated, and modeled datasets."
-    ]
-  },
-  {
-    role: "Graduate Teaching Assistant",
-    company: "University of Central Florida",
-    period: "M.S. Computer Science",
-    icon: GraduationCap,
-    impact: "Mentored 150+ students while maintaining a 4.0 GPA in graduate coursework.",
-    bullets: [
-      "Supported instruction, grading, and technical mentoring for computer science students.",
-      "Explained programming and data concepts with clarity for diverse learning styles.",
-      "Balanced academic excellence with professional data engineering growth."
     ]
   }
 ];
@@ -160,10 +160,10 @@ export const metrics = [
 export const certifications = ["AWS Cloud Foundations", "AWS Architecting", "Python for Data Science"];
 
 export const contactLinks = {
-  email: "rithik.reddy.varla@example.com",
-  linkedin: "https://www.linkedin.com/in/rithik-reddy-varla",
+  email: "rithikreddyvarla@gmail.com",
+  linkedin: "https://www.linkedin.com/in/rithikreddyvarla/",
   github: "https://github.com/rithikreddyvarla19",
-  location: "Orlando, FL"
+  location: "Orlando, Florida"
 };
 
 export const roleTargets = ["Data Engineer", "Cloud Data Engineer", "Business Intelligence Analyst", "Data Analyst", "Analytics Engineer"];
