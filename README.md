@@ -58,6 +58,16 @@ npm install --save-dev gh-pages
 npx gh-pages -d dist
 ```
 
+## Visitor Analytics
+
+This site supports Google Analytics 4. Create a Google Analytics web data stream, then add the measurement ID to a local `.env` file before building:
+
+```bash
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+After deploying that build, Google Analytics can show page views, dates, times, traffic sources, approximate locations, devices, and custom events such as project opens and contact link clicks. It cannot identify a visitor's real name unless that person submits contact information or otherwise identifies themselves.
+
 ## Screenshots
 
 Add production screenshots here after deployment:
