@@ -660,6 +660,15 @@ function Contact() {
   const submit = (event) => {
     event.preventDefault();
     setSubmitted(true);
+    if (!isValid) return;
+
+    const subject = encodeURIComponent(`Portfolio contact from ${form.name.trim()}`);
+    const body = encodeURIComponent(
+      `Name: ${form.name.trim()}\nEmail: ${form.email.trim()}\n\nMessage:\n${form.message.trim()}`
+    );
+
+    trackEvent("contact_form_submit", { contact_method: "mailto" });
+    window.location.href = `mailto:${contactLinks.email}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -701,7 +710,7 @@ function Contact() {
           <button className="mt-5 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950" disabled={submitted && !isValid}>
             <Send size={17} /> Send Message
           </button>
-          {submitted && isValid && <p className="mt-4 rounded-2xl bg-emerald-50 p-4 text-sm font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200">Message UI validated. Connect this form to Formspree, Resend, or a backend endpoint for production delivery.</p>}
+          {submitted && isValid && <p className="mt-4 rounded-2xl bg-emerald-50 p-4 text-sm font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200">Your email app should open with the message ready to send. If it does not open, email me directly at {contactLinks.email}.</p>}
         </form>
       </div>
     </section>
