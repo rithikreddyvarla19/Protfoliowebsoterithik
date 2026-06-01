@@ -21,6 +21,8 @@ Recruiter-focused portfolio website for Rithik Reddy Varla, positioned for Data 
 - Role coverage summary across 13 public GitHub repositories
 - Searchable and filterable project portfolio
 - Project brief panel with recruiter read, proof points, tech stack, and direct GitHub links
+- Visitor review form with structured email output
+- Downloadable Excel review tracker at `public/visitor-review-tracker.xlsx`
 - Professional light/dark mode
 - Skills, experience, education, metrics, certifications, and contact sections
 - Google Analytics support through `VITE_GA_MEASUREMENT_ID`

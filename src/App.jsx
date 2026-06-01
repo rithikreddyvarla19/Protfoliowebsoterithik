@@ -3,13 +3,16 @@ import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import {
   Briefcase,
   CheckCircle2,
+  Download,
   ExternalLink,
+  FileSpreadsheet,
   Filter,
   Github,
   Linkedin,
   Mail,
   MapPin,
   Menu,
+  MessageSquare,
   Moon,
   Search,
   Send,
@@ -69,6 +72,7 @@ const roleTone = {
 };
 
 const getRoleTone = (role) => roleTone[role] ?? roleTone["Data Engineer"];
+const reviewWorkbookHref = `${import.meta.env.BASE_URL}visitor-review-tracker.xlsx`;
 
 function AnimatedBackground() {
   return (
@@ -748,6 +752,161 @@ function Certifications() {
   );
 }
 
+function Reviews() {
+  const [review, setReview] = useState({
+    name: "",
+    role: "",
+    contact: "",
+    rating: 5,
+    message: "",
+    quotePermission: true
+  });
+  const [attempted, setAttempted] = useState(false);
+  const isValid = review.name.trim() && review.message.trim().length >= 20;
+
+  const submitReview = (event) => {
+    event.preventDefault();
+    setAttempted(true);
+    if (!isValid) return;
+
+    const subject = encodeURIComponent(`Portfolio review from ${review.name.trim()}`);
+    const body = encodeURIComponent(
+      [
+        "Portfolio Visitor Review",
+        "",
+        `Name: ${review.name.trim()}`,
+        `Role / Company: ${review.role.trim() || "Not provided"}`,
+        `Email or LinkedIn: ${review.contact.trim() || "Not provided"}`,
+        `Rating: ${review.rating}/5`,
+        `Permission to Quote: ${review.quotePermission ? "Yes" : "No"}`,
+        "",
+        "Review:",
+        review.message.trim(),
+        "",
+        `Submitted from: ${window.location.href}`,
+        `Submitted at: ${new Date().toISOString()}`
+      ].join("\n")
+    );
+
+    trackEvent("portfolio_review_submit", { rating: review.rating });
+    window.location.href = `mailto:${contactLinks.email}?subject=${subject}&body=${body}`;
+  };
+
+  return (
+    <section id="reviews" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
+      <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <SectionHeading kicker="Visitor Review" title="Leave a short review if this portfolio was useful." />
+          <div className="mt-8 rounded-lg border border-slate-200 bg-white/88 p-5 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10">
+            <div className="flex items-start gap-3">
+              <FileSpreadsheet className="mt-1 h-6 w-6 flex-none text-emerald-600 dark:text-emerald-300" />
+              <div>
+                <h3 className="text-lg font-black text-slate-950 dark:text-white">Review tracker</h3>
+                <p className="mt-2 leading-7 text-slate-600 dark:text-slate-300">
+                  Reviews sent from this page are formatted for an Excel tracker, so feedback can be saved and reviewed later.
+                </p>
+                <a
+                  href={reviewWorkbookHref}
+                  download
+                  className="mt-4 inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2.5 text-sm font-black text-slate-800 transition hover:-translate-y-1 dark:border-white/15 dark:bg-white/10 dark:text-white"
+                >
+                  <Download size={16} /> Download tracker
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form onSubmit={submitReview} className="rounded-lg border border-slate-200 bg-white/90 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10">
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="block">
+              <span className="mb-2 block text-sm font-black text-slate-700 dark:text-slate-200">Name</span>
+              <input
+                value={review.name}
+                onChange={(event) => setReview({ ...review, name: event.target.value })}
+                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-950"
+                placeholder="Your name"
+              />
+              {attempted && !review.name.trim() && <span className="mt-1 block text-sm font-semibold text-rose-500">Name is required</span>}
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm font-black text-slate-700 dark:text-slate-200">Role / Company</span>
+              <input
+                value={review.role}
+                onChange={(event) => setReview({ ...review, role: event.target.value })}
+                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-950"
+                placeholder="Recruiter / Company"
+              />
+            </label>
+          </div>
+
+          <label className="mt-4 block">
+            <span className="mb-2 block text-sm font-black text-slate-700 dark:text-slate-200">Email or LinkedIn</span>
+            <input
+              value={review.contact}
+              onChange={(event) => setReview({ ...review, contact: event.target.value })}
+              className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-950"
+              placeholder="Optional"
+            />
+          </label>
+
+          <div className="mt-5">
+            <span className="mb-2 block text-sm font-black text-slate-700 dark:text-slate-200">Rating</span>
+            <div className="flex flex-wrap gap-2">
+              {[1, 2, 3, 4, 5].map((rating) => (
+                <button
+                  key={rating}
+                  type="button"
+                  onClick={() => setReview({ ...review, rating })}
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-sm font-black transition ${
+                    review.rating === rating
+                      ? "bg-slate-950 text-white dark:bg-white dark:text-slate-950"
+                      : "bg-slate-100 text-slate-600 hover:-translate-y-0.5 dark:bg-white/10 dark:text-slate-200"
+                  }`}
+                  aria-label={`${rating} star rating`}
+                >
+                  {rating}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <label className="mt-5 block">
+            <span className="mb-2 block text-sm font-black text-slate-700 dark:text-slate-200">Review</span>
+            <textarea
+              value={review.message}
+              onChange={(event) => setReview({ ...review, message: event.target.value })}
+              rows="5"
+              className="w-full resize-none rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-950"
+              placeholder="What stood out about the portfolio?"
+            />
+            {attempted && review.message.trim().length < 20 && <span className="mt-1 block text-sm font-semibold text-rose-500">Review needs at least 20 characters</span>}
+          </label>
+
+          <label className="mt-4 flex items-start gap-3 rounded-lg bg-slate-50 p-3 text-sm font-bold text-slate-700 dark:bg-white/5 dark:text-slate-200">
+            <input
+              type="checkbox"
+              checked={review.quotePermission}
+              onChange={(event) => setReview({ ...review, quotePermission: event.target.checked })}
+              className="mt-1 h-4 w-4 rounded border-slate-300 text-emerald-600"
+            />
+            <span>You may quote this review on the portfolio or LinkedIn.</span>
+          </label>
+
+          <button className="mt-5 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-black text-white transition hover:-translate-y-1 dark:bg-white dark:text-slate-950">
+            <MessageSquare size={17} /> Send Review
+          </button>
+          {attempted && isValid && (
+            <p className="mt-4 rounded-lg bg-emerald-50 p-4 text-sm font-black text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200">
+              Your email app should open with the review ready to send.
+            </p>
+          )}
+        </form>
+      </div>
+    </section>
+  );
+}
+
 function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
@@ -860,6 +1019,7 @@ export default function App() {
         <Projects />
         <Metrics />
         <Certifications />
+        <Reviews />
         <Contact />
       </main>
       <footer className="border-t border-slate-200 px-4 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">
