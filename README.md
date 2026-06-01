@@ -1,6 +1,6 @@
 # Protfoliowebsoterithik
 
-Recruiter-focused portfolio website for Rithik Reddy Varla, organized around four hiring categories:
+Recruiter-focused portfolio website for Rithik Reddy Varla, positioned for Data Engineer, Data Scientist, and ML Engineer roles and organized around four project evidence categories:
 
 - Data Engineer
 - Data Analytics

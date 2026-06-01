@@ -22,10 +22,10 @@ export const navItems = [
 ];
 
 export const recruiterHighlights = [
-  "M.S. Computer Science candidate at UCF with a 4.0 GPA",
+  "M.S. Computer Science graduate from UCF with a 4.0 GPA",
   "Production data engineering experience across Python, SQL, PySpark, AWS, Snowflake, and BI delivery",
-  "Portfolio includes cloud pipelines, lakehouse architecture, analytics marts, model monitoring, RAG evaluation, and dashboard-ready outputs",
-  "Project repositories include runbooks, tests, CI/CD, infrastructure scaffolds, APIs, dashboards, and stakeholder documentation"
+  "Project portfolio spans cloud pipelines, feature engineering, model training, ML monitoring, RAG evaluation, and analytics outputs",
+  "Repositories include runbooks, tests, CI/CD, infrastructure scaffolds, APIs, dashboards, and technical documentation"
 ];
 
 export const roleTargets = [
@@ -46,7 +46,7 @@ export const roleTargets = [
   },
   {
     label: "Machine Learning",
-    summary: "ML lifecycle, model monitoring, drift detection, RAG evaluation, explainability, and deployment patterns.",
+    summary: "Data science and ML engineering work across feature design, model training, evaluation, deployment, monitoring, and RAG systems.",
     proof: ["MLflow and SageMaker", "FastAPI scoring", "RAG and AI monitoring"]
   }
 ];
@@ -140,7 +140,7 @@ export const education = [
     degree: "M.S. in Computer Science",
     school: "University of Central Florida",
     location: "Orlando, Florida",
-    status: "Graduate Student",
+    status: "Graduate Degree",
     period: "Aug 2024 - May 2026",
     gpa: "GPA: 4.0/4.0",
     coursework: [
@@ -154,8 +154,8 @@ export const education = [
       "Distributed Data Processing"
     ],
     details: [
-      "Graduate study focused on scalable data systems, analytics pipelines, machine learning foundations, and cloud data platforms.",
-      "Coursework and project delivery connect computer science fundamentals with production-minded data engineering execution."
+      "Completed graduate study focused on scalable data systems, analytics pipelines, machine learning foundations, and cloud data platforms.",
+      "Coursework and project delivery connect computer science fundamentals with production-minded data engineering, data science, and ML engineering execution."
     ]
   },
   {

@@ -264,7 +264,7 @@ function Hero() {
             Rithik Reddy Varla
           </motion.h1>
           <motion.p variants={sectionVariants} className="mt-4 text-2xl font-black text-slate-700 dark:text-slate-200">
-            Data Engineer | Data Analytics | BI Analyst | Machine Learning
+            Data Engineer | Data Scientist | ML Engineer
           </motion.p>
           <motion.p variants={sectionVariants} className="mt-4 text-xl font-bold text-slate-600 dark:text-slate-300">
             Production-style data platforms built by a <TypingText />
@@ -330,13 +330,13 @@ function About() {
   return (
     <motion.section id="about" variants={sectionVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
       <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
-        <SectionHeading kicker="Profile" title="Data systems, analytics delivery, and ML operations in one portfolio." />
+        <SectionHeading kicker="Profile" title="Data engineering, data science, and ML engineering portfolio." />
         <div className="grid gap-5 text-lg leading-8 text-slate-600 dark:text-slate-300">
           <p>
-            I am an M.S. Computer Science student at the University of Central Florida with a 4.0 GPA and hands-on data engineering experience across Python, SQL, PySpark, AWS, Snowflake, and BI workflows.
+            I am a University of Central Florida M.S. Computer Science graduate with a 4.0 GPA and hands-on experience building data pipelines, analytical datasets, ML lifecycle platforms, model monitoring systems, and RAG evaluation workflows.
           </p>
           <p>
-            The portfolio is organized for hiring teams: each project highlights the business problem, architecture, technical stack, validation approach, outputs, and the role category it supports.
+            My strongest fit is at the intersection of Data Engineer, Data Scientist, and ML Engineer responsibilities: designing reliable data foundations, engineering features, training and evaluating models, monitoring drift, and delivering production-ready APIs, dashboards, and documentation.
           </p>
         </div>
       </div>
@@ -776,7 +776,7 @@ function Contact() {
     <section id="contact" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
       <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <SectionHeading kicker="Contact" title="Available for data engineering, analytics, BI, and ML platform roles." />
+          <SectionHeading kicker="Contact" title="Available for data engineering, data science, and ML engineering roles." />
           <div className="mt-8 grid gap-3 text-slate-600 dark:text-slate-300">
             <a href={`mailto:${contactLinks.email}`} onClick={() => trackEvent("contact_click", { contact_method: "email" })} className="contact-link"><Mail size={18} /> {contactLinks.email}</a>
             <a href={contactLinks.linkedin} target="_blank" rel="noreferrer" onClick={() => trackEvent("contact_click", { contact_method: "linkedin" })} className="contact-link"><Linkedin size={18} /> LinkedIn</a>
@@ -863,7 +863,7 @@ export default function App() {
         <Contact />
       </main>
       <footer className="border-t border-slate-200 px-4 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">
-        Built for recruiters evaluating data engineering, data analytics, BI, and machine learning platform work.
+        Built for recruiters evaluating data engineering, data science, and ML engineering work.
       </footer>
     </>
   );
