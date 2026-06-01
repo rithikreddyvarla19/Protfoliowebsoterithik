@@ -1,6 +1,5 @@
 import {
   Award,
-  BarChart3,
   BriefcaseBusiness,
   Cloud,
   Code2,
@@ -16,7 +15,6 @@ import {
 export const navItems = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
-  { id: "education", label: "Education" },
   { id: "skills", label: "Skills" },
   { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
@@ -24,42 +22,65 @@ export const navItems = [
 ];
 
 export const recruiterHighlights = [
-  "I am an M.S. Computer Science candidate at UCF with a 4.0 GPA",
-  "I have production data engineering experience across AWS, Snowflake, SQL, Python, and PySpark",
-  "I own full ETL/ELT delivery: modeling, quality checks, monitoring, and BI enablement",
-  "I bring quantified impact across reliability, error reduction, throughput, and mentoring"
+  "M.S. Computer Science candidate at UCF with a 4.0 GPA",
+  "Production data engineering experience across Python, SQL, PySpark, AWS, Snowflake, and BI delivery",
+  "Portfolio includes cloud pipelines, lakehouse architecture, analytics marts, model monitoring, RAG evaluation, and dashboard-ready outputs",
+  "Project repositories include runbooks, tests, CI/CD, infrastructure scaffolds, APIs, dashboards, and stakeholder documentation"
+];
+
+export const roleTargets = [
+  {
+    label: "Data Engineer",
+    summary: "Cloud pipelines, lakehouse layers, orchestration, quality gates, and warehouse-ready data products.",
+    proof: ["AWS, Azure, GCP", "PySpark and Beam", "Airflow, dbt, Terraform"]
+  },
+  {
+    label: "Data Analytics",
+    summary: "Analytical workflows that move from messy source data to KPIs, cohorts, segmentation, and recommendations.",
+    proof: ["SQL and Python", "Cohorts and funnels", "Executive summaries"]
+  },
+  {
+    label: "BI Analyst",
+    summary: "Gold marts, dashboard specifications, KPI definitions, DAX-ready measures, and stakeholder reporting.",
+    proof: ["Power BI and Tableau specs", "Semantic models", "Dashboard extracts"]
+  },
+  {
+    label: "Machine Learning",
+    summary: "ML lifecycle, model monitoring, drift detection, RAG evaluation, explainability, and deployment patterns.",
+    proof: ["MLflow and SageMaker", "FastAPI scoring", "RAG and AI monitoring"]
+  }
 ];
 
 export const skillGroups = [
   {
     title: "Programming",
     icon: Code2,
-    skills: ["Python", "SQL", "Java", "PySpark"]
+    skills: ["Python", "SQL", "Java", "JavaScript", "PySpark"]
   },
   {
     title: "Data Engineering",
     icon: Workflow,
-    skills: ["ETL/ELT", "Data Modeling", "Data Quality", "Pipeline Design"]
+    skills: ["ETL/ELT", "Lakehouse Design", "Data Modeling", "Data Quality", "Pipeline Orchestration"]
   },
   {
-    title: "Big Data",
-    icon: Network,
-    skills: ["Spark", "Kafka", "Airflow", "Delta Lake"]
-  },
-  {
-    title: "Cloud",
+    title: "Cloud Platforms",
     icon: Cloud,
-    skills: ["AWS S3", "Glue", "Lambda", "Redshift", "EMR", "Snowflake"]
+    skills: ["AWS", "Azure Databricks", "Google Cloud", "Snowflake", "BigQuery", "Redshift"]
   },
   {
-    title: "Analytics",
+    title: "Analytics and BI",
     icon: LineChart,
-    skills: ["Pandas", "NumPy", "Power BI", "Tableau"]
+    skills: ["Power BI", "Tableau", "KPI Design", "Cohort Analysis", "Dashboard Specs", "Stakeholder Reporting"]
   },
   {
-    title: "Tools",
+    title: "Machine Learning",
+    icon: Sparkles,
+    skills: ["MLflow", "SageMaker", "RAG Evaluation", "Drift Detection", "XGBoost", "Model Monitoring"]
+  },
+  {
+    title: "Delivery",
     icon: ShieldCheck,
-    skills: ["Git", "Docker", "CI/CD", "Troubleshooting"]
+    skills: ["Docker", "Terraform", "GitHub Actions", "FastAPI", "Streamlit", "Testing"]
   }
 ];
 
@@ -72,8 +93,8 @@ export const experiences = [
     impact: "Mentored 150+ students while maintaining a 4.0 GPA in graduate coursework.",
     bullets: [
       "Supported instruction, grading, and technical mentoring for computer science students.",
-      "Explained programming and data concepts with clarity for diverse learning styles.",
-      "Balanced academic excellence with professional data engineering growth."
+      "Explained programming, database, and data concepts for students with different technical backgrounds.",
+      "Balanced graduate coursework, teaching responsibilities, and production-grade portfolio delivery."
     ]
   },
   {
@@ -97,7 +118,7 @@ export const experiences = [
     bullets: [
       "Modeled curated datasets for analytics and reporting use cases.",
       "Troubleshot batch and cloud pipeline failures across data ingestion and transformation.",
-      "Collaborated with analytics stakeholders to improve trust in production datasets."
+      "Partnered with analytics stakeholders to improve trust in production datasets."
     ]
   },
   {
@@ -133,8 +154,8 @@ export const education = [
       "Distributed Data Processing"
     ],
     details: [
-      "I am pursuing graduate study in computer science while building practical data engineering, cloud, and analytics projects.",
-      "My coursework and project work strengthen the foundations I use for scalable data systems, analytics pipelines, and production-minded engineering."
+      "Graduate study focused on scalable data systems, analytics pipelines, machine learning foundations, and cloud data platforms.",
+      "Coursework and project delivery connect computer science fundamentals with production-minded data engineering execution."
     ]
   },
   {
@@ -155,54 +176,193 @@ export const education = [
       "Software Engineering"
     ],
     details: [
-      "I completed my undergraduate degree in computer science and engineering with an IoT focus.",
-      "This foundation helped me build toward data engineering, cloud systems, and analytics-focused problem solving."
+      "Computer science foundation with coursework across databases, cloud computing, analytics, networks, and software engineering.",
+      "IoT concentration supported practical work with data collection, system design, and connected-device architectures."
     ]
   }
 ];
 
-export const projectFilters = ["All", "Data Engineer", "Data Analyst", "BI Analyst"];
+export const projectFilters = ["All", "Data Engineer", "Data Analytics", "BI Analyst", "Machine Learning"];
 
 export const projects = [
   {
     title: "Cloud-Native Retail Lakehouse",
+    primaryRole: "Data Engineer",
     roles: ["Data Engineer", "BI Analyst"],
     github: "https://github.com/rithikreddyvarla19/Bi-analytics-project",
-    summary: "AWS lakehouse pipeline for retail analytics with automated quality checks and Redshift-ready modeled data.",
-    metrics: ["500K+ records/day", "25+ quality checks", "35% latency reduction"],
-    tech: ["AWS S3", "Glue", "Redshift", "Lambda", "PySpark"],
+    summary: "AWS-ready retail lakehouse with batch and streaming ingestion, bronze/silver/gold layers, dbt marts, Airflow orchestration, and BI-ready outputs.",
+    recruiterRead: "Shows end-to-end ownership of ingestion, modeling, quality, warehouse serving, orchestration, and reporting outputs.",
+    metrics: ["Batch + streaming", "25+ quality checks", "BI-ready extracts"],
+    tech: ["Python", "SQL", "PySpark", "Airflow", "dbt", "AWS", "Terraform"],
+    proof: ["Medallion lakehouse", "PostgreSQL/Redshift serving layer", "Observability artifacts"],
     details:
-      "Designed a cloud-native ingestion and transformation workflow that lands, validates, transforms, and publishes analytics-ready retail data for BI consumption."
+      "Built a production-style retail data platform that lands raw ecommerce data, standardizes it through lakehouse layers, creates fact and dimension marts, validates quality, and exports KPI files for BI tools."
+  },
+  {
+    title: "GCP Batch and Streaming Pipeline",
+    primaryRole: "Data Engineer",
+    roles: ["Data Engineer", "BI Analyst"],
+    github: "https://github.com/rithikreddyvarla19/Real-Time-Data-Pipeline-on-Google-Cloud-Batch-Streaming",
+    summary: "Google Cloud clickstream pipeline with local simulation, Pub/Sub and Dataflow production mapping, BigQuery schemas, Cloud SQL serving, lineage, and monitoring.",
+    recruiterRead: "Strong signal for cloud data engineering because it covers both local reproducibility and a production GCP deployment path.",
+    metrics: ["Batch + streaming modes", "Dead-letter quarantine", "Lineage audit records"],
+    tech: ["Python", "Apache Beam", "Pub/Sub", "BigQuery", "Cloud SQL", "GCS", "Terraform"],
+    proof: ["Dataflow-ready transforms", "Partitioned analytics schemas", "Monitoring docs"],
+    details:
+      "Implements an ecommerce clickstream platform that validates and enriches timestamped events, writes raw/cleaned/curated/analytics layers, emits dead-letter records, and maps the workflow to Pub/Sub, Dataflow, BigQuery, Cloud SQL, and Cloud Storage."
+  },
+  {
+    title: "Azure Databricks Customer Analytics Platform",
+    primaryRole: "Data Engineer",
+    roles: ["Data Engineer", "Data Analytics", "BI Analyst"],
+    github: "https://github.com/rithikreddyvarla19/azure-databricks-customer-analytics-platform",
+    summary: "Azure Databricks lakehouse simulation for customer, transaction, product, support, and web activity data with Gold marts for Power BI.",
+    recruiterRead: "Demonstrates medallion architecture, API ingestion, quarantine logic, customer 360 modeling, and dashboard-ready semantic design.",
+    metrics: ["Bronze/Silver/Gold", "5 synthetic sources", "Power BI measures"],
+    tech: ["Python", "PySpark-ready", "FastAPI", "Parquet", "SQL", "Docker", "Terraform"],
+    proof: ["Customer 360 summary", "Gold analytics marts", "Runbook and data dictionary"],
+    details:
+      "Generates synthetic customer data, ingests from files and a mock REST API, applies Bronze-Silver-Gold transformations, quarantines invalid records, and publishes Gold datasets designed for Power BI dashboards."
+  },
+  {
+    title: "AWS Snowflake ML Lifecycle Platform",
+    primaryRole: "Machine Learning",
+    roles: ["Machine Learning", "Data Engineer"],
+    github: "https://github.com/rithikreddyvarla19/aws-snowflake-ml-lifecycle-platform",
+    summary: "Machine learning lifecycle platform for churn prediction with multi-source ingestion, PySpark ETL, Snowflake feature storage, MLflow, SageMaker, monitoring, and retraining orchestration.",
+    recruiterRead: "Connects data engineering, feature engineering, experiment tracking, deployment, monitoring, and retraining in one production-oriented system.",
+    metrics: ["Champion model selection", "Drift monitoring", "Airflow retraining policy"],
+    tech: ["AWS Glue", "Snowflake", "PySpark", "MLflow", "SageMaker", "FastAPI", "Airflow"],
+    proof: ["Feature store contracts", "Model registry hooks", "Terraform templates"],
+    details:
+      "Covers ingestion, quality validation, feature engineering, candidate model training, hyperparameter optimization, MLflow tracking, champion selection, SageMaker deployment, FastAPI inference, drift detection, and retraining policies."
+  },
+  {
+    title: "AI Data Quality Monitoring Framework",
+    primaryRole: "Machine Learning",
+    roles: ["Machine Learning", "Data Engineer"],
+    github: "https://github.com/rithikreddyvarla19/ai-data-quality-monitoring-framework",
+    summary: "Enterprise monitoring framework for data quality, dataset integrity, drift, model health, and AI system performance across ML and generative AI workloads.",
+    recruiterRead: "High-value MLOps signal: quality checks, drift metrics, GPT monitoring, model health, alerting, API workflows, dashboarding, and persistence.",
+    metrics: ["PSI/KS/JSD drift", "GPT quality metrics", "FastAPI + Streamlit"],
+    tech: ["Python", "FastAPI", "Streamlit", "PostgreSQL", "Docker", "pytest", "CI/CD"],
+    proof: ["Validation engine", "Alert routing", "Monitoring API"],
+    details:
+      "Implements reusable checks for schema, nulls, duplicates, ranges, drift, leakage, model metrics, GPT response quality, latency, retrieval overlap, and alert routing with API and dashboard surfaces."
+  },
+  {
+    title: "LLM RAG Evaluation Platform",
+    primaryRole: "Machine Learning",
+    roles: ["Machine Learning", "Data Engineer"],
+    github: "https://github.com/rithikreddyvarla19/llm-rag-evaluation-platform",
+    summary: "RAG knowledge assistant for 50K+ technical documents with ingestion, chunking, embeddings, FAISS search, source-linked responses, MLflow evaluation, feedback storage, and monitoring dashboard.",
+    recruiterRead: "Shows modern AI application depth: RAG architecture, evaluation metrics, prompt experiments, telemetry, and deployment scaffolding.",
+    metrics: ["50K+ document target", "Top-3 accuracy", "Hallucination tracking"],
+    tech: ["Python", "FastAPI", "FAISS", "MLflow", "PostgreSQL", "Streamlit", "AWS ECS"],
+    proof: ["Ground-truth validation", "Prompt comparison", "Feedback loop"],
+    details:
+      "Builds a retrieval-augmented assistant that loads documents, chunks content, creates embeddings, indexes vectors, serves answers through FastAPI, evaluates faithfulness and relevance, stores feedback, and visualizes monitoring metrics."
+  },
+  {
+    title: "Wealth Client Retention Platform",
+    primaryRole: "Machine Learning",
+    roles: ["Machine Learning", "BI Analyst"],
+    github: "https://github.com/rithikreddyvarla19/wealth-client-retention-platform",
+    summary: "Financial services ML platform for retention risk, asset consolidation opportunity scoring, advisor recommendations, explainability, monitoring, API scoring, and advisor dashboarding.",
+    recruiterRead: "Combines domain-aware feature engineering, model training, explainability, real-time scoring, and business-facing recommendations.",
+    metrics: ["Retention risk score", "AUM trend features", "Advisor action engine"],
+    tech: ["PySpark", "Snowflake SQL", "MLflow", "XGBoost", "LightGBM", "FastAPI", "Streamlit"],
+    proof: ["SHAP explainability", "SageMaker helper", "Advisor dashboard"],
+    details:
+      "Combines CRM, AUM, transactions, advisor interactions, marketing engagement, and demographics to generate risk tiers, top drivers, consolidation opportunities, and recommended advisor interventions."
   },
   {
     title: "Customer Growth Analytics Platform",
-    roles: ["Data Analyst", "BI Analyst"],
+    primaryRole: "Data Analytics",
+    roles: ["Data Analytics", "BI Analyst"],
     github: "https://github.com/rithikreddyvarla19/customer-growth-analytics-platform",
-    summary: "Analytics platform for cohort behavior, funnel performance, segmentation, churn, retention, and LTV.",
-    metrics: ["Cohort analysis", "Funnel insights", "Retention modeling"],
-    tech: ["SQL", "Python", "Pandas", "Analytics"],
+    summary: "End-to-end analytics project for acquisition, conversion, retention, churn, revenue, campaign ROI, segmentation, dashboard extracts, and executive-ready outputs.",
+    recruiterRead: "A clean analyst work sample: source data to SQL/Python analysis, KPIs, cohorts, segmentation, visuals, and stakeholder outputs.",
+    metrics: ["6,000 customers", "24.03% churn rate", "4.81x ROI proxy"],
+    tech: ["SQL", "Python", "Pandas", "NumPy", "SciPy", "SQLite", "Excel"],
+    proof: ["Cohort analysis", "Dashboard-ready files", "KPI definitions"],
     details:
-      "Built analysis workflows that convert raw customer events into growth metrics, behavioral segments, and decision-ready retention views."
+      "Generates synthetic subscription and ecommerce data, cleans and validates it, loads SQLite analysis tables, runs SQL and Python analytics, exports KPI summaries, dashboard extracts, Excel workbooks, visuals, and business insight documentation."
   },
   {
-    title: "AWS Snowflake Production Pipeline",
-    roles: ["Data Engineer", "Cloud Data Engineer"],
-    github: "",
-    summary: "Production-style ETL/ELT ownership across AWS and Snowflake with reliability, troubleshooting, and data modeling focus.",
-    metrics: ["20% reliability lift", "15% fewer errors", "ELT ownership"],
-    tech: ["Python", "SQL", "AWS", "Snowflake"],
+    title: "Child Welfare India Analytics",
+    primaryRole: "Data Analytics",
+    roles: ["Data Analytics", "BI Analyst"],
+    github: "https://github.com/rithikreddyvarla19/child-welfare-india-analytics",
+    summary: "Public-sector analytics workflow using 10,000 synthetic case records for data quality, KPI reporting, visuals, dashboard planning, and stakeholder-ready recommendations.",
+    recruiterRead: "Signals strong reporting discipline: synthetic data generation, cleaning rules, KPI methodology, dashboard guide, and executive summaries.",
+    metrics: ["10,000 raw records", "9,771 clean records", "58.44% follow-up completion"],
+    tech: ["Python", "Pandas", "Matplotlib", "Seaborn", "Jupyter", "CSV"],
+    proof: ["Data dictionary", "KPI definitions", "Stakeholder report"],
     details:
-      "Owned pipeline troubleshooting and reliability improvements for cloud data workflows, emphasizing resilient transformations and trustworthy modeled datasets."
+      "Creates controlled synthetic child welfare support data, cleans duplicates and inconsistent labels, calculates operational KPIs, produces visuals, and documents insights for program review and dashboard planning."
+  },
+  {
+    title: "OPT-In Family Services Dashboard",
+    primaryRole: "BI Analyst",
+    roles: ["BI Analyst", "Data Analytics"],
+    github: "https://github.com/rithikreddyvarla19/optin-family-services-data-dashboard",
+    summary: "Family services data quality and outcomes dashboard work sample with referral cleaning, operational KPIs, chart outputs, reports, and BI dashboard specifications.",
+    recruiterRead: "A compact BI and research analytics sample built around data quality, operational metrics, and non-technical stakeholder deliverables.",
+    metrics: ["774 raw rows", "Referral KPIs", "Power BI/Tableau specs"],
+    tech: ["Python", "Pandas", "Jupyter", "Matplotlib", "BI Specs"],
+    proof: ["Data quality report", "Executive summary", "Dashboard mockup"],
+    details:
+      "Generates realistic referral data, validates outreach and service fields, calculates program KPIs, produces charts, and writes dashboard and reporting artifacts for family support program monitoring."
+  },
+  {
+    title: "Data Engineering Universe",
+    primaryRole: "Data Engineer",
+    roles: ["Data Engineer"],
+    github: "https://github.com/rithikreddyvarla19/data-engineering-universe",
+    summary: "Full-stack data engineering mastery platform with Next.js, FastAPI, PostgreSQL, Redis, OpenAI-ready tutoring, curriculum seed data, Docker, and Kubernetes manifests.",
+    recruiterRead: "Adds product engineering range around data engineering education, backend APIs, persistent progress tracking, and deployment-ready infrastructure.",
+    metrics: ["Full-stack cockpit", "AI tutor endpoint", "Kubernetes manifests"],
+    tech: ["Next.js", "React", "TypeScript", "FastAPI", "PostgreSQL", "Redis", "Docker"],
+    proof: ["Skill tree", "Progress API", "Architecture docs"],
+    details:
+      "Builds a learning cockpit across SQL, Python, modeling, CDC, warehousing, Spark, streaming, orchestration, cloud, DevOps, governance, observability, analytics engineering, and AI data engineering."
+  },
+  {
+    title: "ResumeOptimizerPro",
+    primaryRole: "Data Analytics",
+    roles: ["Data Analytics"],
+    github: "https://github.com/rithikreddyvarla19/ResumeOptimizerPro",
+    summary: "React platform that analyzes resume and job description alignment, extracts keywords, estimates ATS fit, compares missing skills, and generates recruiter-ready rewrite suggestions locally.",
+    recruiterRead: "Shows user-facing product thinking plus practical text analysis, scoring logic, local privacy controls, and polished workflow design.",
+    metrics: ["ATS scoring", "Keyword gap analysis", "Local-only prototype"],
+    tech: ["React", "Vite", "Tailwind", "Framer Motion", "JavaScript", "Local Storage"],
+    proof: ["Before/after bullets", "Truthfulness warnings", "Export workflow"],
+    details:
+      "Parses resume sections, extracts job description keywords, compares matched and missing terms, estimates ATS alignment, rewrites supported bullets, and previews optimized resume output without sending user data outside the browser."
+  },
+  {
+    title: "SQL Injection Demo App",
+    primaryRole: "Data Engineer",
+    roles: ["Data Engineer"],
+    github: "https://github.com/rithikreddyvarla19/sql-injection-demo",
+    summary: "Educational Node.js and MySQL app comparing intentionally vulnerable SQL string concatenation with secure prepared-statement authentication.",
+    recruiterRead: "Useful database engineering signal: understands SQL safety, attack paths, prepared statements, and secure data access patterns.",
+    metrics: ["Vulnerable vs secure route", "Prepared statements", "MySQL schema"],
+    tech: ["Node.js", "Express", "MySQL", "SQL", "HTML", "CSS"],
+    proof: ["Security walkthrough", "Demo payload", "Local-only instructions"],
+    details:
+      "Demonstrates how a classic SQL injection payload can bypass unsafe string-concatenated login logic and how prepared statements block the same attack path."
   }
 ];
 
 export const metrics = [
-  { label: "Records/day processed", value: "2M+", icon: Database },
-  { label: "Pipeline throughput", value: "500K+", icon: Workflow },
-  { label: "Performance improvement", value: "30%", icon: Sparkles },
-  { label: "Quality checks", value: "25+", icon: ShieldCheck },
+  { label: "Public portfolio repos", value: "13", icon: Database },
+  { label: "Cloud ecosystems", value: "3", icon: Cloud },
+  { label: "Project categories", value: "4", icon: Network },
+  { label: "Graduate GPA", value: "4.0", icon: Award },
   { label: "Students mentored", value: "150+", icon: GraduationCap },
-  { label: "Graduate GPA", value: "4.0", icon: Award }
+  { label: "Records/day handled", value: "2M+", icon: Workflow }
 ];
 
 export const certifications = ["AWS Cloud Foundations", "AWS Architecting", "Python for Data Science"];
@@ -213,5 +373,3 @@ export const contactLinks = {
   github: "https://github.com/rithikreddyvarla19",
   location: "Orlando, Florida"
 };
-
-export const roleTargets = ["Data Engineer", "Cloud Data Engineer", "Business Intelligence Analyst", "Data Analyst", "Analytics Engineer"];

@@ -8,11 +8,11 @@ export default {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
       },
       boxShadow: {
-        glow: "0 0 0 1px rgba(45, 212, 191, 0.18), 0 24px 80px rgba(15, 118, 110, 0.18)"
+        glow: "0 0 0 1px rgba(52, 211, 153, 0.22), 0 24px 80px rgba(5, 150, 105, 0.18)"
       },
       backgroundImage: {
         "subtle-grid":
-          "linear-gradient(rgba(20, 184, 166, 0.09) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 184, 166, 0.09) 1px, transparent 1px)"
+          "linear-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, 0.07) 1px, transparent 1px)"
       }
     }
   },

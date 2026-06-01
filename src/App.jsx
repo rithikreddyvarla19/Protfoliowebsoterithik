@@ -1,17 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import {
-  ArrowUpRight,
   Briefcase,
   CheckCircle2,
+  ExternalLink,
+  Filter,
   Github,
   Linkedin,
   Mail,
   MapPin,
   Menu,
   Moon,
+  Search,
   Send,
+  Star,
   Sun,
+  Target,
   X
 } from "lucide-react";
 import {
@@ -32,29 +36,46 @@ import SectionHeading from "./components/SectionHeading";
 import { trackEvent } from "./utils/analytics";
 
 const sectionVariants = {
-  hidden: { opacity: 0, y: 32 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" } }
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } }
 };
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08 } }
+  show: { transition: { staggerChildren: 0.07 } }
 };
+
+const roleTone = {
+  "Data Engineer": {
+    badge: "bg-sky-50 text-sky-800 ring-sky-200 dark:bg-sky-950/50 dark:text-sky-200 dark:ring-sky-700/50",
+    border: "border-sky-300 dark:border-sky-700",
+    accent: "text-sky-700 dark:text-sky-300"
+  },
+  "Data Analytics": {
+    badge: "bg-emerald-50 text-emerald-800 ring-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-200 dark:ring-emerald-700/50",
+    border: "border-emerald-300 dark:border-emerald-700",
+    accent: "text-emerald-700 dark:text-emerald-300"
+  },
+  "BI Analyst": {
+    badge: "bg-amber-50 text-amber-800 ring-amber-200 dark:bg-amber-950/50 dark:text-amber-200 dark:ring-amber-700/50",
+    border: "border-amber-300 dark:border-amber-700",
+    accent: "text-amber-700 dark:text-amber-300"
+  },
+  "Machine Learning": {
+    badge: "bg-violet-50 text-violet-800 ring-violet-200 dark:bg-violet-950/50 dark:text-violet-200 dark:ring-violet-700/50",
+    border: "border-violet-300 dark:border-violet-700",
+    accent: "text-violet-700 dark:text-violet-300"
+  }
+};
+
+const getRoleTone = (role) => roleTone[role] ?? roleTone["Data Engineer"];
 
 function AnimatedBackground() {
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-slate-50 dark:bg-slate-950">
-      <div className="absolute inset-0 bg-subtle-grid bg-[length:38px_38px] opacity-70 dark:opacity-35" />
-      {[...Array(18)].map((_, index) => (
-        <motion.span
-          key={index}
-          className="absolute h-1.5 w-1.5 rounded-full bg-teal-500/35 dark:bg-cyan-300/35"
-          style={{ left: `${(index * 47) % 100}%`, top: `${(index * 29) % 100}%` }}
-          animate={{ y: [0, -18, 0], opacity: [0.2, 0.7, 0.2], scale: [1, 1.8, 1] }}
-          transition={{ duration: 5 + (index % 5), repeat: Infinity, delay: index * 0.25 }}
-        />
-      ))}
-      <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-teal-200/45 via-sky-100/20 to-transparent dark:from-teal-950/50 dark:via-blue-950/20" />
+      <div className="absolute inset-0 bg-subtle-grid bg-[length:36px_36px] opacity-75 dark:opacity-35" />
+      <div className="absolute inset-x-0 top-0 h-80 bg-gradient-to-b from-sky-100 via-white/70 to-transparent dark:from-slate-900 dark:via-slate-950/80" />
+      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-emerald-50 via-transparent to-transparent dark:from-emerald-950/20" />
     </div>
   );
 }
@@ -68,15 +89,15 @@ function Navbar({ activeSection, isDark, setIsDark, recruiterMode, setRecruiterM
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/70 bg-white/78 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/76">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/80 bg-white/88 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/82">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <button onClick={() => goTo("home")} className="group flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-slate-950 text-sm font-bold text-white shadow-glow dark:bg-white dark:text-slate-950">
+          <span className="grid h-10 w-10 place-items-center rounded-lg bg-slate-950 text-sm font-black text-white shadow-glow dark:bg-white dark:text-slate-950">
             RV
           </span>
           <span className="hidden text-left sm:block">
-            <span className="block text-sm font-bold text-slate-950 dark:text-white">Rithik Reddy Varla</span>
-            <span className="block text-xs text-slate-500 dark:text-slate-400">Data Engineering Portfolio</span>
+            <span className="block text-sm font-black text-slate-950 dark:text-white">Rithik Reddy Varla</span>
+            <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400">Data and ML Portfolio</span>
           </span>
         </button>
 
@@ -85,7 +106,7 @@ function Navbar({ activeSection, isDark, setIsDark, recruiterMode, setRecruiterM
             <button
               key={item.id}
               onClick={() => goTo(item.id)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+              className={`rounded-full px-4 py-2 text-sm font-bold transition ${
                 activeSection === item.id
                   ? "bg-slate-950 text-white dark:bg-white dark:text-slate-950"
                   : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
@@ -99,13 +120,13 @@ function Navbar({ activeSection, isDark, setIsDark, recruiterMode, setRecruiterM
         <div className="flex items-center gap-2">
           <button
             onClick={() => setRecruiterMode((value) => !value)}
-            className={`hidden rounded-full px-4 py-2 text-sm font-semibold transition sm:inline-flex ${
+            className={`hidden rounded-full px-4 py-2 text-sm font-black transition sm:inline-flex ${
               recruiterMode
-                ? "bg-teal-500 text-slate-950 shadow-glow"
+                ? "bg-emerald-500 text-slate-950 shadow-glow"
                 : "bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-200"
             }`}
           >
-            Recruiter Mode
+            Recruiter View
           </button>
           <button
             onClick={() => setIsDark((value) => !value)}
@@ -136,16 +157,16 @@ function Navbar({ activeSection, isDark, setIsDark, recruiterMode, setRecruiterM
                 <button
                   key={item.id}
                   onClick={() => goTo(item.id)}
-                  className="rounded-xl px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/10"
+                  className="rounded-lg px-4 py-3 text-left text-sm font-bold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/10"
                 >
                   {item.label}
                 </button>
               ))}
               <button
                 onClick={() => setRecruiterMode((value) => !value)}
-                className="rounded-xl bg-teal-500 px-4 py-3 text-left text-sm font-bold text-slate-950"
+                className="rounded-lg bg-emerald-500 px-4 py-3 text-left text-sm font-black text-slate-950"
               >
-                Recruiter Mode {recruiterMode ? "On" : "Off"}
+                Recruiter View {recruiterMode ? "On" : "Off"}
               </button>
             </div>
           </motion.div>
@@ -156,17 +177,20 @@ function Navbar({ activeSection, isDark, setIsDark, recruiterMode, setRecruiterM
 }
 
 function TypingText() {
-  const phrases = useMemo(() => ["Data Engineer", "Cloud Data Engineer", "BI & Analytics Builder", "Pipeline Reliability Owner"], []);
+  const phrases = useMemo(
+    () => ["Data Engineer", "Analytics Builder", "BI Developer", "ML Platform Builder"],
+    []
+  );
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [letters, setLetters] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const current = phrases[phraseIndex];
-    const delay = deleting ? 45 : 82;
+    const delay = deleting ? 38 : 74;
     const timer = setTimeout(() => {
       if (!deleting && letters === current.length) {
-        setTimeout(() => setDeleting(true), 850);
+        setTimeout(() => setDeleting(true), 900);
       } else if (deleting && letters === 0) {
         setDeleting(false);
         setPhraseIndex((index) => (index + 1) % phrases.length);
@@ -178,7 +202,7 @@ function TypingText() {
   }, [deleting, letters, phraseIndex, phrases]);
 
   return (
-    <span className="text-teal-600 dark:text-teal-300">
+    <span className="text-emerald-700 dark:text-emerald-300">
       {phrases[phraseIndex].slice(0, letters)}
       <span className="ml-1 animate-pulse">|</span>
     </span>
@@ -195,27 +219,22 @@ function RecruiterPanel({ recruiterMode }) {
           exit={{ opacity: 0, y: -16 }}
           className="mx-auto mt-24 max-w-7xl px-4 sm:px-6 lg:px-8"
         >
-          <div className="rounded-2xl border border-teal-300/60 bg-teal-50/90 p-4 shadow-glow dark:border-teal-400/20 dark:bg-teal-950/40">
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="rounded-lg border border-emerald-300 bg-white/92 p-4 shadow-glow dark:border-emerald-400/25 dark:bg-slate-900/88">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-teal-700 dark:text-teal-300">Recruiter Mode</p>
-                <h2 className="text-xl font-bold text-slate-950 dark:text-white">Fast fit check for data roles</h2>
+                <p className="section-kicker">Recruiter View</p>
+                <h2 className="mt-2 text-2xl font-black text-slate-950 dark:text-white">
+                  Fast evidence map for data roles
+                </h2>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {roleTargets.map((role) => (
-                  <span key={role} className="rounded-full bg-white px-3 py-1 text-xs font-bold text-slate-700 dark:bg-white/10 dark:text-white">
-                    {role}
-                  </span>
+              <div className="grid gap-2 sm:grid-cols-2 lg:min-w-[520px]">
+                {recruiterHighlights.map((highlight) => (
+                  <div key={highlight} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm font-semibold text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none text-emerald-600 dark:text-emerald-300" />
+                    <span>{highlight}</span>
+                  </div>
                 ))}
               </div>
-            </div>
-            <div className="mt-4 grid gap-3 md:grid-cols-2">
-              {recruiterHighlights.map((highlight) => (
-                <div key={highlight} className="flex gap-3 rounded-xl bg-white/75 p-3 text-sm text-slate-700 dark:bg-slate-900/70 dark:text-slate-200">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none text-teal-600 dark:text-teal-300" />
-                  <span>{highlight}</span>
-                </div>
-              ))}
             </div>
           </div>
         </motion.aside>
@@ -225,73 +244,81 @@ function RecruiterPanel({ recruiterMode }) {
 }
 
 function Hero() {
+  const counts = useMemo(
+    () =>
+      roleTargets.map((role) => ({
+        ...role,
+        count: projects.filter((project) => project.roles.includes(role.label)).length
+      })),
+    []
+  );
+
   return (
     <section id="home" className="mx-auto flex min-h-screen max-w-7xl scroll-mt-24 flex-col justify-center px-4 pb-16 pt-32 sm:px-6 lg:px-8">
-      <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.95fr]">
         <motion.div initial="hidden" animate="show" variants={stagger}>
-          <motion.p variants={sectionVariants} className="mb-4 inline-flex rounded-full border border-teal-400/40 bg-white/80 px-4 py-2 text-sm font-bold text-teal-700 shadow-sm dark:bg-white/10 dark:text-teal-300">
+          <motion.p variants={sectionVariants} className="mb-4 inline-flex rounded-full border border-slate-300 bg-white/86 px-4 py-2 text-sm font-black text-slate-700 shadow-sm dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
             Orlando, FL based Data Engineer
           </motion.p>
           <motion.h1 variants={sectionVariants} className="max-w-4xl text-5xl font-black leading-tight text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
             Rithik Reddy Varla
           </motion.h1>
-          <motion.p variants={sectionVariants} className="mt-4 text-2xl font-bold text-slate-700 dark:text-slate-200">
-            Data Engineer | Cloud Data Engineer | BI & Analytics
+          <motion.p variants={sectionVariants} className="mt-4 text-2xl font-black text-slate-700 dark:text-slate-200">
+            Data Engineer | Data Analytics | BI Analyst | Machine Learning
           </motion.p>
-          <motion.p variants={sectionVariants} className="mt-4 text-xl font-semibold text-slate-600 dark:text-slate-300">
-            Building scalable data pipelines and cloud data platforms as a <TypingText />
+          <motion.p variants={sectionVariants} className="mt-4 text-xl font-bold text-slate-600 dark:text-slate-300">
+            Production-style data platforms built by a <TypingText />
           </motion.p>
           <motion.p variants={sectionVariants} className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-            I design reliable ETL/ELT systems, analytics-ready data models, and BI foundations across Python, SQL, PySpark, AWS, Snowflake, Power BI, and Tableau.
+            I build inspectable repositories across cloud data engineering, analytics, BI delivery, MLOps, RAG evaluation, and model monitoring. Each project is designed to show architecture, execution, tests, documentation, and business-ready outputs.
           </motion.p>
           <motion.div variants={sectionVariants} className="mt-8 flex flex-wrap gap-3">
-            <a href="#projects" className="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white shadow-glow transition hover:-translate-y-1 dark:bg-white dark:text-slate-950">
-              View Projects
+            <a href="#projects" className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-black text-white shadow-glow transition hover:-translate-y-1 dark:bg-white dark:text-slate-950">
+              <Target size={17} /> View Projects
             </a>
-            <a href="#" className="rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-800 transition hover:-translate-y-1 dark:border-white/15 dark:bg-white/10 dark:text-white">
-              Download Resume
+            <a href={`mailto:${contactLinks.email}?subject=Portfolio%20Resume%20Request`} className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-black text-slate-800 transition hover:-translate-y-1 dark:border-white/15 dark:bg-white/10 dark:text-white">
+              <Mail size={17} /> Request Resume
             </a>
             <IconLink href={contactLinks.github} icon={Github} onClick={() => trackEvent("contact_click", { contact_method: "github" })}>GitHub</IconLink>
             <IconLink href={contactLinks.linkedin} icon={Linkedin} onClick={() => trackEvent("contact_click", { contact_method: "linkedin" })}>LinkedIn</IconLink>
           </motion.div>
         </motion.div>
+
         <motion.div
-          initial={{ opacity: 0, scale: 0.92, rotateX: 10 }}
-          animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-          transition={{ duration: 0.8, delay: 0.25 }}
-          className="relative"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="rounded-lg border border-slate-200 bg-white/90 p-5 shadow-2xl shadow-slate-900/10 dark:border-white/10 dark:bg-slate-900/82"
         >
-          <div className="rounded-3xl border border-slate-200 bg-white/82 p-5 shadow-2xl shadow-teal-900/10 backdrop-blur dark:border-white/10 dark:bg-white/10">
-            <div className="rounded-2xl bg-slate-950 p-5 text-white">
-              <div className="mb-6 flex items-center justify-between">
-                <span className="text-sm font-bold text-teal-300">Pipeline Health</span>
-                <span className="rounded-full bg-emerald-400/20 px-3 py-1 text-xs font-bold text-emerald-300">Live</span>
-              </div>
-              {["S3 ingestion", "Glue transforms", "Snowflake model", "BI semantic layer"].map((item, index) => (
-                <motion.div
-                  key={item}
-                  initial={{ width: "35%" }}
-                  animate={{ width: `${82 + index * 4}%` }}
-                  transition={{ duration: 1.2, delay: index * 0.2, repeat: Infinity, repeatType: "reverse", repeatDelay: 1.4 }}
-                  className="mb-5"
-                >
-                  <div className="mb-2 flex justify-between text-sm">
-                    <span>{item}</span>
-                    <span>{95 - index}%</span>
-                  </div>
-                  <div className="h-2 rounded-full bg-white/10">
-                    <div className="h-2 rounded-full bg-gradient-to-r from-teal-300 to-sky-300" />
-                  </div>
-                </motion.div>
-              ))}
-              <div className="mt-6 grid grid-cols-2 gap-3">
-                {["2M+ rows/day", "25+ checks", "30% faster", "4.0 GPA"].map((stat) => (
-                  <div key={stat} className="rounded-xl border border-white/10 bg-white/5 p-4 text-center text-sm font-bold">
-                    {stat}
-                  </div>
-                ))}
-              </div>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-white/10">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Portfolio Coverage</p>
+              <h2 className="mt-1 text-2xl font-black text-slate-950 dark:text-white">13 public repos</h2>
             </div>
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-800 dark:bg-emerald-400/15 dark:text-emerald-200">
+              Live on GitHub
+            </span>
+          </div>
+          <div className="mt-5 grid gap-3">
+            {counts.map((role) => {
+              const tone = getRoleTone(role.label);
+              return (
+                <div key={role.label} className={`rounded-lg border bg-slate-50 p-4 dark:bg-white/5 ${tone.border}`}>
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="font-black text-slate-950 dark:text-white">{role.label}</h3>
+                    <span className={`rounded-full px-3 py-1 text-xs font-black ring-1 ${tone.badge}`}>{role.count} repos</span>
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{role.summary}</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {role.proof.map((item) => (
+                      <span key={item} className="rounded-full bg-white px-3 py-1 text-xs font-bold text-slate-600 ring-1 ring-slate-200 dark:bg-slate-950/40 dark:text-slate-200 dark:ring-white/10">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
       </div>
@@ -303,13 +330,13 @@ function About() {
   return (
     <motion.section id="about" variants={sectionVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
       <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
-        <SectionHeading kicker="About" title="Data engineering depth with analytics empathy." />
+        <SectionHeading kicker="Profile" title="Data systems, analytics delivery, and ML operations in one portfolio." />
         <div className="grid gap-5 text-lg leading-8 text-slate-600 dark:text-slate-300">
           <p>
-            I am Rithik Reddy Varla, an M.S. Computer Science student at the University of Central Florida with a 4.0 GPA. I am building a practical portfolio across data engineering, cloud platforms, and business intelligence.
+            I am an M.S. Computer Science student at the University of Central Florida with a 4.0 GPA and hands-on data engineering experience across Python, SQL, PySpark, AWS, Snowflake, and BI workflows.
           </p>
           <p>
-            My work centers on scalable ETL/ELT pipelines, AWS and Snowflake data platforms, data modeling, data quality, and BI systems that turn operational data into trusted reporting and analytics.
+            The portfolio is organized for hiring teams: each project highlights the business problem, architecture, technical stack, validation approach, outputs, and the role category it supports.
           </p>
         </div>
       </div>
@@ -320,7 +347,7 @@ function About() {
 function Education() {
   return (
     <section id="education" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
-      <SectionHeading kicker="Education" title="Graduate study grounded in practical engineering." className="mb-8" />
+      <SectionHeading kicker="Education" title="Computer science foundation for data platforms." className="mb-8" />
       <div className="grid gap-5">
         {education.map((item) => (
           <motion.article
@@ -329,13 +356,13 @@ function Education() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-100px" }}
-            className="rounded-3xl border border-slate-200 bg-white/82 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10"
+            className="rounded-lg border border-slate-200 bg-white/88 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10"
           >
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-teal-700 dark:text-teal-300">{item.status}</p>
+                <p className="section-kicker">{item.status}</p>
                 <h3 className="mt-2 text-3xl font-black text-slate-950 dark:text-white">{item.degree}</h3>
-                <p className="mt-2 text-lg font-bold text-slate-700 dark:text-slate-200">{item.school}</p>
+                <p className="mt-2 text-lg font-black text-slate-700 dark:text-slate-200">{item.school}</p>
                 <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">{item.location}</p>
               </div>
               <div className="flex flex-wrap gap-2 md:justify-end">
@@ -343,7 +370,7 @@ function Education() {
                   {item.period}
                 </span>
                 {item.gpa && (
-                  <span className="w-fit rounded-full bg-teal-50 px-4 py-2 text-sm font-black text-teal-700 dark:bg-teal-950/40 dark:text-teal-200">
+                  <span className="w-fit rounded-full bg-emerald-50 px-4 py-2 text-sm font-black text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200">
                     {item.gpa}
                   </span>
                 )}
@@ -356,7 +383,7 @@ function Education() {
             </div>
             {item.coursework?.length > 0 && (
               <div className="mt-6">
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Coursework</p>
+                <p className="text-sm font-black uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Relevant Coursework</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {item.coursework.map((course) => (
                     <span key={course} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-white/10 dark:bg-slate-950/50 dark:text-slate-100">
@@ -380,8 +407,8 @@ function Skills() {
 
   return (
     <section id="skills" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
-      <SectionHeading kicker="Skills" title="A practical stack for modern data teams." className="mb-8" />
-      <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+      <SectionHeading kicker="Skills" title="Stack organized by production responsibility." className="mb-8" />
+      <div className="grid gap-6 lg:grid-cols-[0.75fr_1.25fr]">
         <div className="grid gap-3">
           {skillGroups.map((group) => {
             const TabIcon = group.icon;
@@ -389,14 +416,14 @@ function Skills() {
               <button
                 key={group.title}
                 onClick={() => setActive(group.title)}
-                className={`flex items-center gap-3 rounded-2xl border p-4 text-left transition ${
+                className={`flex items-center gap-3 rounded-lg border p-4 text-left transition ${
                   active === group.title
-                    ? "border-teal-400 bg-teal-50 shadow-glow dark:bg-teal-950/40"
-                    : "border-slate-200 bg-white/70 hover:-translate-y-1 dark:border-white/10 dark:bg-white/5"
+                    ? "border-emerald-400 bg-emerald-50 shadow-glow dark:bg-emerald-950/35"
+                    : "border-slate-200 bg-white/78 hover:-translate-y-1 dark:border-white/10 dark:bg-white/5"
                 }`}
               >
-                <TabIcon className="h-5 w-5 text-teal-600 dark:text-teal-300" />
-                <span className="font-bold text-slate-900 dark:text-white">{group.title}</span>
+                <TabIcon className="h-5 w-5 text-emerald-600 dark:text-emerald-300" />
+                <span className="font-black text-slate-900 dark:text-white">{group.title}</span>
               </button>
             );
           })}
@@ -404,21 +431,21 @@ function Skills() {
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="rounded-3xl border border-slate-200 bg-white/82 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10"
+            exit={{ opacity: 0, y: -18 }}
+            className="rounded-lg border border-slate-200 bg-white/88 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10"
           >
-            <Icon className="mb-5 h-10 w-10 text-teal-600 dark:text-teal-300" />
+            <Icon className="mb-5 h-10 w-10 text-emerald-600 dark:text-emerald-300" />
             <h3 className="text-2xl font-black text-slate-950 dark:text-white">{selected.title}</h3>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {selected.skills.map((skill, index) => (
                 <motion.span
                   key={skill}
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.04 }}
-                  className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-bold text-slate-700 dark:border-white/10 dark:bg-slate-950/50 dark:text-slate-100"
+                  transition={{ delay: index * 0.035 }}
+                  className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-black text-slate-700 dark:border-white/10 dark:bg-slate-950/50 dark:text-slate-100"
                 >
                   {skill}
                 </motion.span>
@@ -434,36 +461,36 @@ function Skills() {
 function Experience() {
   return (
     <section id="experience" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
-      <SectionHeading kicker="Experience" title="Production-minded, impact-led timeline." className="mb-10" />
+      <SectionHeading kicker="Experience" title="Production-minded delivery and technical mentoring." className="mb-10" />
       <div className="relative grid gap-6">
-        <div className="absolute left-6 top-0 hidden h-full w-px bg-gradient-to-b from-teal-400 via-slate-300 to-transparent md:block dark:via-white/20" />
+        <div className="absolute left-6 top-0 hidden h-full w-px bg-gradient-to-b from-emerald-400 via-slate-300 to-transparent md:block dark:via-white/20" />
         {experiences.map((item, index) => {
           const Icon = item.icon;
           return (
             <motion.article
               key={`${item.company}-${item.role}`}
-              initial={{ opacity: 0, x: -28 }}
+              initial={{ opacity: 0, x: -26 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.55, delay: index * 0.08 }}
-              className="relative rounded-3xl border border-slate-200 bg-white/82 p-6 shadow-xl shadow-slate-900/5 md:ml-16 dark:border-white/10 dark:bg-white/10"
+              transition={{ duration: 0.5, delay: index * 0.07 }}
+              className="relative rounded-lg border border-slate-200 bg-white/88 p-6 shadow-xl shadow-slate-900/5 md:ml-16 dark:border-white/10 dark:bg-white/10"
             >
-              <div className="absolute -left-[4.7rem] top-6 hidden h-12 w-12 place-items-center rounded-2xl bg-slate-950 text-teal-300 shadow-glow md:grid">
+              <div className="absolute -left-[4.7rem] top-6 hidden h-12 w-12 place-items-center rounded-lg bg-slate-950 text-emerald-300 shadow-glow md:grid">
                 <Icon size={22} />
               </div>
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                 <div>
                   <h3 className="text-2xl font-black text-slate-950 dark:text-white">{item.company} - {item.role}</h3>
-                  <p className="mt-1 text-sm font-bold text-teal-700 dark:text-teal-300">{item.period}</p>
+                  <p className="mt-1 text-sm font-black text-emerald-700 dark:text-emerald-300">{item.period}</p>
                 </div>
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 dark:bg-white/10 dark:text-slate-200">
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600 dark:bg-white/10 dark:text-slate-200">
                   {item.impact}
                 </span>
               </div>
               <ul className="mt-5 grid gap-2 text-slate-600 dark:text-slate-300">
                 {item.bullets.map((bullet) => (
                   <li key={bullet} className="flex gap-3">
-                    <CheckCircle2 className="mt-1 h-4 w-4 flex-none text-teal-600 dark:text-teal-300" />
+                    <CheckCircle2 className="mt-1 h-4 w-4 flex-none text-emerald-600 dark:text-emerald-300" />
                     <span>{bullet}</span>
                   </li>
                 ))}
@@ -476,123 +503,197 @@ function Experience() {
   );
 }
 
-function Projects() {
-  const [filter, setFilter] = useState("All");
-  const [selected, setSelected] = useState(null);
-  const visibleProjects = filter === "All" ? projects : projects.filter((project) => project.roles.includes(filter));
+function ProjectCard({ project, active, onSelect }) {
+  const tone = getRoleTone(project.primaryRole);
 
   return (
-    <section id="projects" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
-      <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-        <SectionHeading kicker="Featured Projects" title="Proof of cloud, pipeline, and analytics execution." />
-        <div className="flex flex-wrap gap-2">
-          {projectFilters.map((item) => (
-            <button
-              key={item}
-              onClick={() => setFilter(item)}
-              className={`rounded-full px-4 py-2 text-sm font-bold transition ${
-                filter === item
-                  ? "bg-slate-950 text-white dark:bg-white dark:text-slate-950"
-                  : "bg-white text-slate-600 hover:-translate-y-1 dark:bg-white/10 dark:text-slate-200"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
+    <motion.article
+      layout
+      whileHover={{ y: -6 }}
+      className={`group flex min-h-[390px] flex-col rounded-lg border bg-white/90 p-5 shadow-xl shadow-slate-900/5 transition dark:bg-white/10 ${
+        active ? `${tone.border} shadow-glow` : "border-slate-200 dark:border-white/10"
+      }`}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <Briefcase className={`h-8 w-8 ${tone.accent}`} />
+        <span className={`rounded-full px-3 py-1 text-xs font-black ring-1 ${tone.badge}`}>{project.primaryRole}</span>
       </div>
-      <motion.div layout className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {visibleProjects.map((project) => (
-          <motion.article
-            layout
-            key={project.title}
-            whileHover={{ y: -8, scale: 1.015 }}
-            className="group flex min-h-[360px] flex-col rounded-3xl border border-slate-200 bg-white/86 p-6 shadow-xl shadow-slate-900/5 transition dark:border-white/10 dark:bg-white/10"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <Briefcase className="h-8 w-8 text-teal-600 dark:text-teal-300" />
-              <button onClick={() => {
-                trackEvent("project_open", { project_title: project.title });
-                setSelected(project);
-              }} className="rounded-full bg-slate-100 p-2 text-slate-700 transition group-hover:bg-slate-950 group-hover:text-white dark:bg-white/10 dark:text-white">
-                <ArrowUpRight size={18} />
-              </button>
-            </div>
-            <h3 className="mt-6 text-2xl font-black text-slate-950 dark:text-white">{project.title}</h3>
-            <p className="mt-3 flex-1 leading-7 text-slate-600 dark:text-slate-300">{project.summary}</p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {project.tech.map((tech) => (
-                <span key={tech} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 dark:bg-slate-950/50 dark:text-slate-200">
-                  {tech}
-                </span>
-              ))}
-            </div>
-            <div className="mt-5 grid gap-2">
-              {project.metrics.map((metric) => (
-                <span key={metric} className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-bold text-teal-700 dark:border-white/10 dark:text-teal-300">
-                  {metric}
-                </span>
-              ))}
-            </div>
-          </motion.article>
+      <h3 className="mt-5 text-2xl font-black leading-tight text-slate-950 dark:text-white">{project.title}</h3>
+      <p className="mt-3 flex-1 leading-7 text-slate-600 dark:text-slate-300">{project.summary}</p>
+      <div className="mt-5 flex flex-wrap gap-2">
+        {project.roles.map((role) => (
+          <span key={role} className={`rounded-full px-3 py-1 text-xs font-black ring-1 ${getRoleTone(role).badge}`}>
+            {role}
+          </span>
         ))}
-      </motion.div>
-      <ProjectModal project={selected} onClose={() => setSelected(null)} />
-    </section>
+      </div>
+      <div className="mt-5 grid gap-2">
+        {project.metrics.map((metric) => (
+          <span key={metric} className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-black text-slate-700 dark:border-white/10 dark:text-slate-200">
+            {metric}
+          </span>
+        ))}
+      </div>
+      <div className="mt-5 flex items-center gap-2">
+        <button
+          onClick={() => {
+            trackEvent("project_open", { project_title: project.title });
+            onSelect(project);
+          }}
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-slate-950 px-4 py-2.5 text-sm font-black text-white transition hover:-translate-y-0.5 dark:bg-white dark:text-slate-950"
+        >
+          <Star size={16} /> Brief
+        </button>
+        <a
+          href={project.github}
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => trackEvent("project_github_click", { project_title: project.title })}
+          aria-label={`Open ${project.title} on GitHub`}
+          className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:-translate-y-0.5 dark:border-white/10 dark:bg-white/10 dark:text-white"
+        >
+          <Github size={18} />
+        </a>
+      </div>
+    </motion.article>
   );
 }
 
-function ProjectModal({ project, onClose }) {
+function ProjectBrief({ project }) {
+  if (!project) return null;
+  const tone = getRoleTone(project.primaryRole);
+
   return (
-    <AnimatePresence>
-      {project && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[70] grid place-items-center bg-slate-950/70 p-4 backdrop-blur" onClick={onClose}>
-          <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 30, scale: 0.96 }}
-            onClick={(event) => event.stopPropagation()}
-            className="w-full max-w-2xl rounded-3xl border border-white/10 bg-white p-6 shadow-2xl dark:bg-slate-950"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="section-kicker">Project Detail</p>
-                <h3 className="mt-2 text-3xl font-black text-slate-950 dark:text-white">{project.title}</h3>
-              </div>
-              <button onClick={onClose} className="grid h-10 w-10 place-items-center rounded-full bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-white">
-                <X size={20} />
+    <aside className={`sticky top-24 rounded-lg border bg-white/92 p-6 shadow-2xl shadow-slate-900/10 dark:bg-slate-900/90 ${tone.border}`}>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="section-kicker">Selected Brief</p>
+          <h3 className="mt-2 text-3xl font-black leading-tight text-slate-950 dark:text-white">{project.title}</h3>
+        </div>
+        <span className={`rounded-full px-3 py-1 text-xs font-black ring-1 ${tone.badge}`}>{project.primaryRole}</span>
+      </div>
+      <p className="mt-5 text-base leading-7 text-slate-600 dark:text-slate-300">{project.recruiterRead}</p>
+      <div className="mt-6 grid gap-3">
+        <p className="text-sm font-black uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Proof Points</p>
+        {project.proof.map((item) => (
+          <div key={item} className="flex gap-3 rounded-lg bg-slate-50 p-3 text-sm font-bold text-slate-700 dark:bg-white/5 dark:text-slate-200">
+            <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none text-emerald-600 dark:text-emerald-300" />
+            <span>{item}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6">
+        <p className="text-sm font-black uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Tech Stack</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {project.tech.map((tech) => (
+            <span key={tech} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600 dark:bg-white/10 dark:text-slate-200">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+      <p className="mt-6 leading-7 text-slate-600 dark:text-slate-300">{project.details}</p>
+      <a
+        href={project.github}
+        target="_blank"
+        rel="noreferrer"
+        onClick={() => trackEvent("project_github_click", { project_title: project.title })}
+        className="mt-6 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-black text-white transition hover:-translate-y-1 dark:bg-white dark:text-slate-950"
+      >
+        <ExternalLink size={17} /> Open GitHub Repo
+      </a>
+    </aside>
+  );
+}
+
+function Projects() {
+  const [filter, setFilter] = useState("All");
+  const [query, setQuery] = useState("");
+  const [activeProject, setActiveProject] = useState(projects[0]);
+
+  const filteredProjects = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    return projects.filter((project) => {
+      const matchesRole = filter === "All" || project.roles.includes(filter);
+      const searchText = [
+        project.title,
+        project.summary,
+        project.recruiterRead,
+        project.primaryRole,
+        ...project.roles,
+        ...project.tech,
+        ...project.metrics,
+        ...project.proof
+      ]
+        .join(" ")
+        .toLowerCase();
+      return matchesRole && (!normalized || searchText.includes(normalized));
+    });
+  }, [filter, query]);
+
+  const projectCounts = useMemo(
+    () =>
+      projectFilters.map((item) => ({
+        label: item,
+        count: item === "All" ? projects.length : projects.filter((project) => project.roles.includes(item)).length
+      })),
+    []
+  );
+
+  const selectedProject = filteredProjects.find((project) => project.title === activeProject?.title) ?? filteredProjects[0] ?? null;
+
+  return (
+    <section id="projects" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
+      <div className="mb-8 grid gap-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+        <SectionHeading kicker="Project Portfolio" title="Four role filters, thirteen public repositories, direct proof." />
+        <div className="grid gap-3">
+          <label className="relative block">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              aria-label="Search projects"
+              placeholder="Search projects, tools, cloud platforms, or outcomes"
+              className="w-full rounded-full border border-slate-200 bg-white/90 py-3 pl-11 pr-4 text-sm font-bold text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-white/10 dark:text-white dark:focus:ring-emerald-950"
+            />
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {projectCounts.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => setFilter(item.label)}
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-black transition ${
+                  filter === item.label
+                    ? "bg-slate-950 text-white dark:bg-white dark:text-slate-950"
+                    : "bg-white text-slate-600 ring-1 ring-slate-200 hover:-translate-y-0.5 dark:bg-white/10 dark:text-slate-200 dark:ring-white/10"
+                }`}
+              >
+                <Filter size={15} /> {item.label} <span className="opacity-70">{item.count}</span>
               </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <motion.div layout className="grid gap-5 md:grid-cols-2">
+          {filteredProjects.map((project) => (
+            <ProjectCard
+              key={project.title}
+              project={project}
+              active={selectedProject?.title === project.title}
+              onSelect={setActiveProject}
+            />
+          ))}
+          {filteredProjects.length === 0 && (
+            <div className="rounded-lg border border-slate-200 bg-white/88 p-6 text-slate-600 dark:border-white/10 dark:bg-white/10 dark:text-slate-300">
+              No project matches this search.
             </div>
-            <p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">{project.details}</p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              {project.metrics.map((metric) => (
-                <div key={metric} className="rounded-2xl bg-teal-50 p-4 text-sm font-black text-teal-800 dark:bg-teal-950/40 dark:text-teal-200">
-                  {metric}
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {project.tech.map((tech) => (
-                <span key={tech} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 dark:bg-white/10 dark:text-slate-200">
-                  {tech}
-                </span>
-              ))}
-            </div>
-            <div className="mt-7">
-              {project.github ? (
-                <a href={project.github} target="_blank" rel="noreferrer" onClick={() => trackEvent("project_github_click", { project_title: project.title })} className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white dark:bg-white dark:text-slate-950">
-                  <Github size={17} /> View GitHub
-                </a>
-              ) : (
-                <span className="inline-flex rounded-full bg-slate-100 px-5 py-3 text-sm font-bold text-slate-600 dark:bg-white/10 dark:text-slate-200">
-                  Private production-style project
-                </span>
-              )}
-            </div>
-          </motion.div>
+          )}
         </motion.div>
-      )}
-    </AnimatePresence>
+        <ProjectBrief project={selectedProject} />
+      </div>
+    </section>
   );
 }
 
@@ -601,7 +702,7 @@ function Metrics() {
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      <SectionHeading kicker="Metrics" title="Signals recruiters can scan fast." className="mb-8" />
+      <SectionHeading kicker="Portfolio Signals" title="High-signal proof points for fast screening." className="mb-8" />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {metrics.map((metric) => {
           const Icon = metric.icon;
@@ -610,17 +711,17 @@ function Metrics() {
             <motion.button
               key={metric.label}
               onClick={() => setActive(metric.label)}
-              whileTap={{ scale: 0.97 }}
-              whileHover={{ y: -6 }}
-              className={`rounded-3xl border p-6 text-left transition ${
+              whileTap={{ scale: 0.98 }}
+              whileHover={{ y: -5 }}
+              className={`rounded-lg border p-6 text-left transition ${
                 isActive
-                  ? "border-teal-400 bg-teal-50 shadow-glow dark:bg-teal-950/40"
-                  : "border-slate-200 bg-white/82 dark:border-white/10 dark:bg-white/10"
+                  ? "border-emerald-400 bg-emerald-50 shadow-glow dark:bg-emerald-950/35"
+                  : "border-slate-200 bg-white/88 dark:border-white/10 dark:bg-white/10"
               }`}
             >
-              <Icon className="h-8 w-8 text-teal-600 dark:text-teal-300" />
+              <Icon className="h-8 w-8 text-emerald-600 dark:text-emerald-300" />
               <div className="mt-5 text-4xl font-black text-slate-950 dark:text-white">{metric.value}</div>
-              <div className="mt-2 text-sm font-bold text-slate-600 dark:text-slate-300">{metric.label}</div>
+              <div className="mt-2 text-sm font-black text-slate-600 dark:text-slate-300">{metric.label}</div>
             </motion.button>
           );
         })}
@@ -632,12 +733,12 @@ function Metrics() {
 function Certifications() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      <div className="rounded-3xl border border-slate-200 bg-white/82 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10">
+      <div className="rounded-lg border border-slate-200 bg-white/88 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10">
         <p className="section-kicker">Certifications</p>
         <div className="mt-5 grid gap-3 md:grid-cols-3">
           {certifications.map((certification) => (
-            <div key={certification} className="flex items-center gap-3 rounded-2xl bg-slate-50 p-4 font-bold text-slate-800 dark:bg-slate-950/50 dark:text-white">
-              <CheckCircle2 className="h-5 w-5 text-teal-600 dark:text-teal-300" />
+            <div key={certification} className="flex items-center gap-3 rounded-lg bg-slate-50 p-4 font-black text-slate-800 dark:bg-slate-950/50 dark:text-white">
+              <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-300" />
               {certification}
             </div>
           ))}
@@ -675,7 +776,7 @@ function Contact() {
     <section id="contact" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
       <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <SectionHeading kicker="Contact" title="Let's talk data roles, cloud platforms, and analytics impact." />
+          <SectionHeading kicker="Contact" title="Available for data engineering, analytics, BI, and ML platform roles." />
           <div className="mt-8 grid gap-3 text-slate-600 dark:text-slate-300">
             <a href={`mailto:${contactLinks.email}`} onClick={() => trackEvent("contact_click", { contact_method: "email" })} className="contact-link"><Mail size={18} /> {contactLinks.email}</a>
             <a href={contactLinks.linkedin} target="_blank" rel="noreferrer" onClick={() => trackEvent("contact_click", { contact_method: "linkedin" })} className="contact-link"><Linkedin size={18} /> LinkedIn</a>
@@ -683,34 +784,34 @@ function Contact() {
             <span className="contact-link"><MapPin size={18} /> {contactLinks.location}</span>
           </div>
         </div>
-        <form onSubmit={submit} className="rounded-3xl border border-slate-200 bg-white/86 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10">
+        <form onSubmit={submit} className="rounded-lg border border-slate-200 bg-white/90 p-6 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10">
           {["name", "email"].map((field) => (
             <label key={field} className="mb-4 block">
-              <span className="mb-2 block text-sm font-bold capitalize text-slate-700 dark:text-slate-200">{field}</span>
+              <span className="mb-2 block text-sm font-black capitalize text-slate-700 dark:text-slate-200">{field}</span>
               <input
                 value={form[field]}
                 onChange={(event) => setForm({ ...form, [field]: event.target.value })}
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-teal-400 focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-teal-950"
+                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-950"
                 placeholder={field === "email" ? "recruiter@company.com" : "Your name"}
               />
               {submitted && errors[field] && <span className="mt-1 block text-sm font-semibold text-rose-500">{errors[field]}</span>}
             </label>
           ))}
           <label className="block">
-            <span className="mb-2 block text-sm font-bold text-slate-700 dark:text-slate-200">Message</span>
+            <span className="mb-2 block text-sm font-black text-slate-700 dark:text-slate-200">Message</span>
             <textarea
               value={form.message}
               onChange={(event) => setForm({ ...form, message: event.target.value })}
               rows="5"
-              className="w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-teal-400 focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-teal-950"
-              placeholder="I am hiring for a data engineering role..."
+              className="w-full resize-none rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-950"
+              placeholder="I am hiring for a data role..."
             />
             {submitted && errors.message && <span className="mt-1 block text-sm font-semibold text-rose-500">{errors.message}</span>}
           </label>
-          <button className="mt-5 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950" disabled={submitted && !isValid}>
+          <button className="mt-5 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-black text-white transition hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950" disabled={submitted && !isValid}>
             <Send size={17} /> Send Message
           </button>
-          {submitted && isValid && <p className="mt-4 rounded-2xl bg-emerald-50 p-4 text-sm font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200">Your email app should open with the message ready to send. If it does not open, email me directly at {contactLinks.email}.</p>}
+          {submitted && isValid && <p className="mt-4 rounded-lg bg-emerald-50 p-4 text-sm font-black text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200">Your email app should open with the message ready to send. If it does not open, email me directly at {contactLinks.email}.</p>}
         </form>
       </div>
     </section>
@@ -718,8 +819,8 @@ function Contact() {
 }
 
 export default function App() {
-  const [isDark, setIsDark] = useState(true);
-  const [recruiterMode, setRecruiterMode] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const [recruiterMode, setRecruiterMode] = useState(true);
   const [activeSection, setActiveSection] = useState("home");
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
@@ -747,7 +848,7 @@ export default function App() {
   return (
     <>
       <AnimatedBackground />
-      <motion.div className="fixed left-0 right-0 top-0 z-[80] h-1 origin-left bg-teal-400" style={{ scaleX }} />
+      <motion.div className="fixed left-0 right-0 top-0 z-[80] h-1 origin-left bg-emerald-400" style={{ scaleX }} />
       <Navbar activeSection={activeSection} isDark={isDark} setIsDark={setIsDark} recruiterMode={recruiterMode} setRecruiterMode={setRecruiterMode} />
       <RecruiterPanel recruiterMode={recruiterMode} />
       <main>
@@ -762,7 +863,7 @@ export default function App() {
         <Contact />
       </main>
       <footer className="border-t border-slate-200 px-4 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">
-        Built for recruiters evaluating data engineering, cloud data, BI, analytics, and data analyst roles.
+        Built for recruiters evaluating data engineering, data analytics, BI, and machine learning platform work.
       </footer>
     </>
   );
