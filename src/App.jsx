@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import {
   Briefcase,
@@ -75,11 +75,159 @@ const getRoleTone = (role) => roleTone[role] ?? roleTone["Data Engineer"];
 const reviewWorkbookHref = `${import.meta.env.BASE_URL}visitor-review-tracker.xlsx`;
 
 function AnimatedBackground() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return undefined;
+
+    let animationFrame = 0;
+    let width = 0;
+    let height = 0;
+    let nodes = [];
+    const pointer = { x: 0, y: 0, active: false };
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const createNodes = () => {
+      const count = Math.min(78, Math.max(42, Math.floor((width * height) / 18000)));
+      nodes = Array.from({ length: count }, (_, index) => ({
+        x: (index * 137.5) % width,
+        y: (index * 91.7) % height,
+        vx: ((index % 5) - 2) * 0.07,
+        vy: (((index + 2) % 5) - 2) * 0.055,
+        size: 2 + (index % 3),
+        phase: index * 0.37
+      }));
+    };
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      createNodes();
+    };
+
+    const movePointer = (event) => {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      pointer.active = true;
+    };
+
+    const clearPointer = () => {
+      pointer.active = false;
+    };
+
+    const draw = (time = 0) => {
+      const dark = document.documentElement.classList.contains("dark");
+      const edgeColor = dark ? "rgba(125, 211, 252, 0.2)" : "rgba(14, 116, 144, 0.16)";
+      const activeEdgeColor = dark ? "rgba(52, 211, 153, 0.42)" : "rgba(5, 150, 105, 0.32)";
+      const nodeColor = dark ? "rgba(167, 243, 208, 0.72)" : "rgba(15, 118, 110, 0.48)";
+      const sparkColor = dark ? "rgba(251, 191, 36, 0.68)" : "rgba(124, 58, 237, 0.4)";
+
+      context.clearRect(0, 0, width, height);
+
+      context.save();
+      context.translate((time * 0.006) % 56, 0);
+      context.strokeStyle = dark ? "rgba(148, 163, 184, 0.045)" : "rgba(15, 23, 42, 0.05)";
+      context.lineWidth = 1;
+      for (let x = -80; x < width + 80; x += 56) {
+        context.beginPath();
+        context.moveTo(x, 0);
+        context.lineTo(x - height * 0.18, height);
+        context.stroke();
+      }
+      context.restore();
+
+      nodes.forEach((node) => {
+        if (!reducedMotion) {
+          node.x += node.vx;
+          node.y += node.vy;
+          if (node.x < -20) node.x = width + 20;
+          if (node.x > width + 20) node.x = -20;
+          if (node.y < -20) node.y = height + 20;
+          if (node.y > height + 20) node.y = -20;
+        }
+      });
+
+      for (let i = 0; i < nodes.length; i += 1) {
+        for (let j = i + 1; j < nodes.length; j += 1) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const distance = Math.hypot(dx, dy);
+          if (distance < 155) {
+            const midX = (a.x + b.x) / 2;
+            const midY = (a.y + b.y) / 2;
+            const pointerDistance = pointer.active ? Math.hypot(midX - pointer.x, midY - pointer.y) : 9999;
+            context.strokeStyle = pointerDistance < 180 ? activeEdgeColor : edgeColor;
+            context.lineWidth = pointerDistance < 180 ? 1.35 : 0.8;
+            context.globalAlpha = 1 - distance / 170;
+            context.beginPath();
+            context.moveTo(a.x, a.y);
+            context.lineTo(b.x, b.y);
+            context.stroke();
+          }
+        }
+      }
+
+      context.globalAlpha = 1;
+      nodes.forEach((node, index) => {
+        const pulse = reducedMotion ? 0 : Math.sin(time * 0.002 + node.phase) * 0.9;
+        const pointerDistance = pointer.active ? Math.hypot(node.x - pointer.x, node.y - pointer.y) : 9999;
+        const size = node.size + pulse + (pointerDistance < 140 ? 2 : 0);
+        context.fillStyle = pointerDistance < 140 ? sparkColor : nodeColor;
+        context.fillRect(node.x - size / 2, node.y - size / 2, size, size);
+
+        if (index % 7 === 0 && !reducedMotion) {
+          const next = nodes[(index + 5) % nodes.length];
+          const progress = (time * 0.00008 + index * 0.071) % 1;
+          context.fillStyle = sparkColor;
+          context.fillRect(
+            node.x + (next.x - node.x) * progress - 2,
+            node.y + (next.y - node.y) * progress - 2,
+            4,
+            4
+          );
+        }
+      });
+
+      if (!reducedMotion) {
+        animationFrame = window.requestAnimationFrame(draw);
+      }
+    };
+
+    resize();
+    if (reducedMotion) {
+      draw();
+    } else {
+      animationFrame = window.requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("resize", resize);
+    window.addEventListener("pointermove", movePointer);
+    window.addEventListener("pointerleave", clearPointer);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", movePointer);
+      window.removeEventListener("pointerleave", clearPointer);
+    };
+  }, []);
+
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-slate-50 dark:bg-slate-950">
-      <div className="absolute inset-0 bg-subtle-grid bg-[length:36px_36px] opacity-75 dark:opacity-35" />
-      <div className="absolute inset-x-0 top-0 h-80 bg-gradient-to-b from-sky-100 via-white/70 to-transparent dark:from-slate-900 dark:via-slate-950/80" />
-      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-emerald-50 via-transparent to-transparent dark:from-emerald-950/20" />
+      <canvas ref={canvasRef} className="absolute inset-0" aria-hidden="true" />
+      <div className="absolute inset-0 bg-subtle-grid bg-[length:44px_44px] opacity-35 dark:opacity-20" />
+      <div className="absolute inset-x-0 top-0 h-80 bg-gradient-to-b from-sky-100/85 via-white/55 to-transparent dark:from-slate-900 dark:via-slate-950/68" />
+      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-emerald-50/85 via-transparent to-transparent dark:from-emerald-950/22" />
     </div>
   );
 }
