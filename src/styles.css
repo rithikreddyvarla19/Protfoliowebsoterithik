@@ -25,6 +25,134 @@ textarea {
   -webkit-tap-highlight-color: transparent;
 }
 
+.role-orbit-stage {
+  perspective: 1100px;
+  transform-style: preserve-3d;
+}
+
+.role-orbit-stage::before {
+  position: absolute;
+  inset: 8% 4% 13%;
+  content: "";
+  background:
+    linear-gradient(135deg, rgba(14, 165, 233, 0.16), transparent 36%),
+    linear-gradient(225deg, rgba(16, 185, 129, 0.18), transparent 40%),
+    linear-gradient(180deg, rgba(124, 58, 237, 0.12), transparent 60%);
+  filter: blur(18px);
+  opacity: 0.82;
+}
+
+.role-orbit-stage canvas {
+  position: relative;
+  z-index: 1;
+  touch-action: none;
+}
+
+.role-lens-grid {
+  perspective: 1000px;
+}
+
+.role-lens-card {
+  transform-style: preserve-3d;
+}
+
+.role-lens-card:hover,
+.role-lens-card:focus-visible {
+  box-shadow: 0 22px 48px var(--role-glow);
+  transform: rotateX(4deg) rotateY(-4deg) translateY(-3px);
+}
+
+.role-mini-picture {
+  position: relative;
+  height: 74px;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.08), rgba(255, 255, 255, 0.52)),
+    radial-gradient(circle at 18% 24%, var(--role-glow), transparent 36%),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+  background-size: auto, auto, 18px 18px;
+}
+
+.role-mini-picture span {
+  position: absolute;
+  display: block;
+  background: var(--role-color);
+  box-shadow: 0 0 20px var(--role-glow);
+}
+
+.role-mini-picture span:nth-child(1) {
+  left: 12px;
+  top: 17px;
+  width: 34%;
+  height: 5px;
+  animation: stream-slide 2.6s ease-in-out infinite;
+}
+
+.role-mini-picture span:nth-child(2) {
+  left: 48%;
+  top: 16px;
+  width: 12px;
+  height: 42px;
+  animation: bar-grow 2.2s ease-in-out infinite;
+}
+
+.role-mini-picture span:nth-child(3) {
+  right: 16px;
+  bottom: 14px;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--role-color);
+  background: transparent;
+  animation: plane-tilt 3.4s ease-in-out infinite;
+}
+
+@keyframes stream-slide {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: translateX(46px);
+    opacity: 1;
+  }
+}
+
+@keyframes bar-grow {
+  0%,
+  100% {
+    transform: scaleY(0.64);
+  }
+
+  50% {
+    transform: scaleY(1.08);
+  }
+}
+
+@keyframes plane-tilt {
+  0%,
+  100% {
+    transform: rotateX(0deg) rotateZ(0deg);
+  }
+
+  50% {
+    transform: rotateX(42deg) rotateZ(7deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-lens-card:hover,
+  .role-lens-card:focus-visible {
+    transform: none;
+  }
+
+  .role-mini-picture span {
+    animation: none;
+  }
+}
+
 @layer components {
   .section-kicker {
     @apply text-sm font-black uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300;
