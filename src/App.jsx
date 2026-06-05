@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
-import * as THREE from "three";
 import {
   BarChart3,
   Briefcase,
@@ -139,8 +138,6 @@ const roleVisuals = {
     signals: ["MLflow", "Model monitoring", "RAG evaluation"]
   }
 };
-const roleVisualOrder = ["Data Engineer", "Data Analytics", "BI Analyst", "Machine Learning"];
-
 function AnimatedBackground() {
   const canvasRef = useRef(null);
 
@@ -495,393 +492,75 @@ function EvidenceLedger() {
   );
 }
 
-function drawRoundedRect(context, x, y, width, height, radius) {
-  if (context.roundRect) {
-    context.beginPath();
-    context.roundRect(x, y, width, height, radius);
-    context.fill();
-    return;
-  }
-
-  context.beginPath();
-  context.moveTo(x + radius, y);
-  context.arcTo(x + width, y, x + width, y + height, radius);
-  context.arcTo(x + width, y + height, x, y + height, radius);
-  context.arcTo(x, y + height, x, y, radius);
-  context.arcTo(x, y, x + width, y, radius);
-  context.fill();
-}
-
-function createRoleLabelTexture(visual) {
-  const labelCanvas = document.createElement("canvas");
-  const context = labelCanvas.getContext("2d");
-  labelCanvas.width = 384;
-  labelCanvas.height = 192;
-
-  context.clearRect(0, 0, labelCanvas.width, labelCanvas.height);
-  context.fillStyle = "rgba(15, 23, 42, 0.78)";
-  drawRoundedRect(context, 16, 22, 352, 148, 28);
-  context.strokeStyle = visual.darkColor;
-  context.lineWidth = 4;
-  context.strokeRect(36, 42, 312, 108);
-
-  context.fillStyle = "#ffffff";
-  context.font = "900 66px Inter, Arial, sans-serif";
-  context.textAlign = "center";
-  context.fillText(visual.shortLabel, 192, 96);
-  context.font = "800 25px Inter, Arial, sans-serif";
-  context.fillStyle = visual.darkColor;
-  context.fillText(visual.sceneLabel, 192, 133);
-
-  const texture = new THREE.CanvasTexture(labelCanvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
-}
-
-function disposeThreeMaterial(material) {
-  Object.values(material).forEach((value) => {
-    if (value?.isTexture) value.dispose();
-  });
-  material.dispose();
-}
-
-function RoleOrbitScene({ activeRole, onRoleChange }) {
-  const canvasRef = useRef(null);
-  const shellRef = useRef(null);
-  const activeRoleRef = useRef(activeRole);
-  const hoveredRoleRef = useRef("");
-  const onRoleChangeRef = useRef(onRoleChange);
-
-  useEffect(() => {
-    activeRoleRef.current = activeRole;
-  }, [activeRole]);
-
-  useEffect(() => {
-    onRoleChangeRef.current = onRoleChange;
-  }, [onRoleChange]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const shell = shellRef.current;
-    if (!canvas || !shell) return undefined;
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      canvas,
-      powerPreference: "high-performance"
-    });
-    renderer.setClearColor(0x000000, 0);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-    camera.position.set(0, 0.08, 6);
-
-    const mainGroup = new THREE.Group();
-    scene.add(mainGroup);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.72));
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.05);
-    keyLight.position.set(3, 4, 5);
-    scene.add(keyLight);
-    const accentLight = new THREE.PointLight(0x34d399, 0.95, 9);
-    accentLight.position.set(-2.7, -1.6, 3.6);
-    scene.add(accentLight);
-
-    const core = new THREE.Group();
-    mainGroup.add(core);
-
-    const hubMaterial = new THREE.MeshStandardMaterial({
-      color: 0xf8fafc,
-      emissive: 0x10b981,
-      emissiveIntensity: 0.12,
-      metalness: 0.45,
-      opacity: 0.92,
-      roughness: 0.32,
-      transparent: true
-    });
-    const hub = new THREE.Mesh(new THREE.IcosahedronGeometry(0.56, 2), hubMaterial);
-    core.add(hub);
-
-    const ringMaterial = new THREE.MeshBasicMaterial({
-      color: 0x22c55e,
-      opacity: 0.34,
-      transparent: true
-    });
-    const ringOne = new THREE.Mesh(new THREE.TorusGeometry(0.92, 0.01, 10, 96), ringMaterial);
-    const ringTwo = new THREE.Mesh(new THREE.TorusGeometry(1.24, 0.008, 10, 96), ringMaterial.clone());
-    ringOne.rotation.x = Math.PI / 2.7;
-    ringTwo.rotation.y = Math.PI / 2.2;
-    core.add(ringOne, ringTwo);
-
-    const layerMaterial = new THREE.MeshStandardMaterial({
-      color: 0xe2e8f0,
-      emissive: 0x38bdf8,
-      emissiveIntensity: 0.05,
-      metalness: 0.2,
-      opacity: 0.56,
-      roughness: 0.42,
-      transparent: true
-    });
-    for (let index = 0; index < 5; index += 1) {
-      const size = 1.34 - index * 0.15;
-      const layer = new THREE.Mesh(new THREE.BoxGeometry(size, 0.075, size * 0.62), layerMaterial.clone());
-      layer.position.y = -0.45 + index * 0.18;
-      layer.rotation.y = index * 0.34;
-      core.add(layer);
-    }
-
-    const particlePositions = new Float32Array(120 * 3);
-    for (let index = 0; index < particlePositions.length; index += 3) {
-      const angle = index * 0.81;
-      const radius = 1.8 + ((index / 3) % 7) * 0.26;
-      particlePositions[index] = Math.cos(angle) * radius;
-      particlePositions[index + 1] = (((index / 3) % 9) - 4) * 0.28;
-      particlePositions[index + 2] = Math.sin(angle) * radius * 0.72;
-    }
-    const particlesGeometry = new THREE.BufferGeometry();
-    particlesGeometry.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-    const particles = new THREE.Points(
-      particlesGeometry,
-      new THREE.PointsMaterial({
-        color: 0x14b8a6,
-        opacity: 0.48,
-        size: 0.035,
-        transparent: true
-      })
-    );
-    mainGroup.add(particles);
-
-    const roleObjects = [];
-    const hotspots = [];
-    const packetGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-    const hitboxGeometry = new THREE.SphereGeometry(0.74, 18, 18);
-    const hitboxMaterial = new THREE.MeshBasicMaterial({
-      opacity: 0,
-      transparent: true
-    });
-
-    roleVisualOrder.forEach((role, index) => {
-      const visual = roleVisuals[role];
-      const angle = (index / roleVisualOrder.length) * Math.PI * 2 - Math.PI / 2;
-      const radius = 2.35;
-      const position = new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * 1.05, Math.sin(angle) * 0.6);
-      const roleGroup = new THREE.Group();
-      roleGroup.position.copy(position);
-
-      const material = new THREE.MeshStandardMaterial({
-        color: visual.color,
-        emissive: visual.color,
-        emissiveIntensity: 0.1,
-        metalness: 0.3,
-        opacity: 0.78,
-        roughness: 0.36,
-        transparent: true
-      });
-      const panel = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.74, 0.08), material);
-      roleGroup.add(panel);
-
-      for (let segment = 0; segment < 4; segment += 1) {
-        const segmentMaterial = new THREE.MeshStandardMaterial({
-          color: visual.darkColor,
-          emissive: visual.darkColor,
-          emissiveIntensity: 0.2,
-          metalness: 0.1,
-          opacity: 0.8,
-          roughness: 0.5,
-          transparent: true
-        });
-        const segmentMesh = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.08 + segment * 0.025, 0.08), segmentMaterial);
-        segmentMesh.position.set(-0.42 + segment * 0.28, -0.26 + segment * 0.025, 0.12);
-        roleGroup.add(segmentMesh);
-      }
-
-      const label = new THREE.Sprite(
-        new THREE.SpriteMaterial({
-          depthTest: false,
-          depthWrite: false,
-          map: createRoleLabelTexture(visual),
-          opacity: 0.94,
-          transparent: true
-        })
-      );
-      label.position.set(0, 0.1, 0.32);
-      label.renderOrder = 20;
-      label.scale.set(1.35, 0.68, 1);
-      roleGroup.add(label);
-
-      const hitbox = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
-      hitbox.userData.role = role;
-      roleGroup.add(hitbox);
-      hotspots.push(hitbox);
-
-      const lineGeometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), position]);
-      const lineMaterial = new THREE.LineBasicMaterial({
-        color: visual.darkColor,
-        opacity: 0.22,
-        transparent: true
-      });
-      const line = new THREE.Line(lineGeometry, lineMaterial);
-      mainGroup.add(line);
-
-      const packetMaterial = new THREE.MeshStandardMaterial({
-        color: visual.darkColor,
-        emissive: visual.darkColor,
-        emissiveIntensity: 0.35,
-        metalness: 0.2,
-        roughness: 0.45
-      });
-      const packet = new THREE.Mesh(packetGeometry, packetMaterial);
-      mainGroup.add(packet);
-
-      roleObjects.push({
-        angle,
-        label,
-        lineMaterial,
-        material,
-        packet,
-        position,
-        role,
-        roleGroup,
-        visual
-      });
-      mainGroup.add(roleGroup);
-    });
-
-    const raycaster = new THREE.Raycaster();
-    const pointer = new THREE.Vector2();
-    const tilt = { x: 0, y: 0 };
-
-    const resize = () => {
-      const width = Math.max(shell.clientWidth, 320);
-      const height = Math.max(shell.clientHeight, 360);
-      renderer.setSize(width, height, false);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    };
-
-    const handlePointerMove = (event) => {
-      const rect = canvas.getBoundingClientRect();
-      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-      tilt.x = pointer.x;
-      tilt.y = pointer.y;
-
-      raycaster.setFromCamera(pointer, camera);
-      const [hit] = raycaster.intersectObjects(hotspots);
-      const nextRole = hit?.object.userData.role ?? "";
-      hoveredRoleRef.current = nextRole;
-      canvas.style.cursor = nextRole ? "pointer" : "default";
-      if (nextRole && nextRole !== activeRoleRef.current) {
-        onRoleChangeRef.current(nextRole);
-      }
-    };
-
-    const handlePointerLeave = () => {
-      hoveredRoleRef.current = "";
-      tilt.x = 0;
-      tilt.y = 0;
-      canvas.style.cursor = "default";
-    };
-
-    const handlePointerDown = () => {
-      if (hoveredRoleRef.current) {
-        onRoleChangeRef.current(hoveredRoleRef.current);
-      }
-    };
-
-    const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(shell);
-    canvas.addEventListener("pointermove", handlePointerMove);
-    canvas.addEventListener("pointerleave", handlePointerLeave);
-    canvas.addEventListener("pointerdown", handlePointerDown);
-
-    let frameId = 0;
-    let pixelSampled = false;
-    const clock = new THREE.Clock();
-    const sampleScenePixels = () => {
-      if (pixelSampled || !renderer.domElement.width || !renderer.domElement.height) return;
-
-      const gl = renderer.getContext();
-      const sampleSize = 8;
-      const pixels = new Uint8Array(sampleSize * sampleSize * 4);
-      const x = Math.max(0, Math.floor(renderer.domElement.width / 2 - sampleSize / 2));
-      const y = Math.max(0, Math.floor(renderer.domElement.height / 2 - sampleSize / 2));
-      gl.readPixels(x, y, sampleSize, sampleSize, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-      const checksum = pixels.reduce((sum, value) => sum + value, 0);
-      canvas.dataset.renderChecksum = String(checksum);
-      canvas.dataset.rendered = checksum > 0 ? "true" : "false";
-      pixelSampled = checksum > 0;
-    };
-
-    const animate = () => {
-      const elapsed = clock.getElapsedTime();
-      const active = activeRoleRef.current;
-      const targetY = reducedMotion ? tilt.x * 0.08 : tilt.x * 0.18 + elapsed * 0.06;
-      const targetX = reducedMotion ? -tilt.y * 0.04 : -tilt.y * 0.12;
-
-      mainGroup.rotation.y = THREE.MathUtils.lerp(mainGroup.rotation.y, targetY, 0.06);
-      mainGroup.rotation.x = THREE.MathUtils.lerp(mainGroup.rotation.x, targetX, 0.06);
-      core.rotation.y += reducedMotion ? 0 : 0.008;
-      core.rotation.x += reducedMotion ? 0 : 0.003;
-      particles.rotation.y += reducedMotion ? 0 : 0.0018;
-
-      roleObjects.forEach((item, index) => {
-        const isActive = active === item.role;
-        const scale = THREE.MathUtils.lerp(item.roleGroup.scale.x, isActive ? 1.18 : 0.9, 0.08);
-        item.roleGroup.scale.setScalar(scale);
-        item.roleGroup.rotation.z = Math.sin(elapsed * 0.8 + index) * (reducedMotion ? 0.006 : 0.018);
-        item.material.opacity = THREE.MathUtils.lerp(item.material.opacity, isActive ? 0.96 : 0.56, 0.08);
-        item.material.emissiveIntensity = THREE.MathUtils.lerp(item.material.emissiveIntensity, isActive ? 0.32 : 0.08, 0.08);
-        item.lineMaterial.opacity = THREE.MathUtils.lerp(item.lineMaterial.opacity, isActive ? 0.62 : 0.18, 0.08);
-        item.label.material.opacity = THREE.MathUtils.lerp(item.label.material.opacity, isActive ? 1 : 0.66, 0.08);
-
-        const progress = reducedMotion ? 0.62 : (elapsed * 0.18 + index * 0.22) % 1;
-        item.packet.position.set(
-          item.position.x * progress,
-          item.position.y * progress,
-          item.position.z * progress
-        );
-        item.packet.scale.setScalar(isActive ? 1.35 : 0.8);
-      });
-
-      renderer.render(scene, camera);
-      sampleScenePixels();
-      frameId = window.requestAnimationFrame(animate);
-    };
-
-    resize();
-    animate();
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      resizeObserver.disconnect();
-      canvas.removeEventListener("pointermove", handlePointerMove);
-      canvas.removeEventListener("pointerleave", handlePointerLeave);
-      canvas.removeEventListener("pointerdown", handlePointerDown);
-      scene.traverse((object) => {
-        object.geometry?.dispose();
-        if (Array.isArray(object.material)) {
-          object.material.forEach(disposeThreeMaterial);
-        } else if (object.material) {
-          disposeThreeMaterial(object.material);
-        }
-      });
-      renderer.dispose();
-    };
-  }, []);
+function SystemsCockpit({ activeRole, counts, setActiveRole }) {
+  const activeVisual = roleVisuals[activeRole] ?? roleVisuals["Data Engineer"];
+  const activeCount = counts.find((role) => role.label === activeRole)?.count ?? 0;
 
   return (
-    <div ref={shellRef} className="role-orbit-stage relative h-[430px] min-h-[360px] w-full overflow-hidden md:h-[500px]">
-      <canvas
-        ref={canvasRef}
-        aria-label="Interactive 3D role map for Data Engineering, Data Analytics, BI, and Machine Learning"
-        className="h-full w-full"
-        data-testid="role-orbit-canvas"
-        role="img"
-      />
+    <div className="systems-cockpit" data-testid="systems-cockpit">
+      <div className="systems-cockpit-header">
+        <span className="inline-flex items-center gap-2">
+          <MousePointer2 size={14} /> Interactive Evidence Map
+        </span>
+        <span>{activeCount} repos in focus</span>
+      </div>
+
+      <div className="systems-cockpit-stage" style={{ "--active-color": activeVisual.darkColor }}>
+        <svg className="systems-cockpit-lines" viewBox="0 0 680 440" role="img" aria-label="Data systems evidence map">
+          <defs>
+            <linearGradient id="activeFlowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#38bdf8" />
+              <stop offset="50%" stopColor={activeVisual.darkColor} />
+              <stop offset="100%" stopColor="#34d399" />
+            </linearGradient>
+          </defs>
+          <path className="systems-grid-line" d="M68 76 H600" />
+          <path className="systems-grid-line" d="M68 174 H600" />
+          <path className="systems-grid-line" d="M68 272 H600" />
+          <path className="systems-grid-line" d="M68 370 H600" />
+          <path className="systems-grid-line" d="M116 52 V392" />
+          <path className="systems-grid-line" d="M278 52 V392" />
+          <path className="systems-grid-line" d="M438 52 V392" />
+          <path className="systems-flow-line" d="M96 324 C170 250 214 198 288 198 S430 142 548 104" />
+          <path className="systems-flow-line delay-one" d="M102 118 C198 142 236 266 330 272 S456 250 564 328" />
+          <path className="systems-flow-line delay-two" d="M116 366 C198 360 254 314 326 238 S438 112 574 86" />
+          <circle className="systems-packet" cx="96" cy="324" r="7" />
+          <circle className="systems-packet delay-one" cx="102" cy="118" r="6" />
+          <circle className="systems-packet delay-two" cx="116" cy="366" r="5" />
+        </svg>
+
+        <div className="systems-core-panel">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Portfolio Kernel</p>
+          <h3>Data systems with inspectable proof</h3>
+          <div className="mt-5 grid gap-3">
+            {["Architecture", "Execution", "Tests", "Business output"].map((item) => (
+              <span key={item}>{item}</span>
+            ))}
+          </div>
+        </div>
+
+        {counts.map((role, index) => {
+          const visual = roleVisuals[role.label];
+          const Icon = visual.icon;
+          const isActive = role.label === activeRole;
+          return (
+            <button
+              key={role.label}
+              type="button"
+              onClick={() => setActiveRole(role.label)}
+              style={{ "--role-color": visual.darkColor, "--role-glow": visual.glow }}
+              className={`systems-role-node node-${index + 1} ${isActive ? "is-active" : ""}`}
+            >
+              <span className="systems-role-icon"><Icon size={19} /></span>
+              <span className="systems-role-copy">
+                <span>{visual.shortLabel}</span>
+                <strong>{role.label}</strong>
+              </span>
+              <span className="systems-role-count">{role.count}</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -898,48 +577,7 @@ function RoleOrbitExperience({ activeRole, counts, onExploreRole, setActiveRole 
       transition={{ duration: 0.7, delay: 0.2 }}
       className="relative"
     >
-      <div className="absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full border border-slate-200 bg-white/82 px-3 py-2 text-xs font-black uppercase tracking-[0.14em] text-slate-600 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-200">
-        <MousePointer2 size={14} /> Role Map
-      </div>
-      <RoleOrbitScene activeRole={activeRole} onRoleChange={setActiveRole} />
-
-      <div className="role-lens-grid mt-3 grid gap-3 sm:grid-cols-2">
-        {counts.map((role) => {
-          const visual = roleVisuals[role.label];
-          const Icon = visual.icon;
-          const isActive = role.label === activeRole;
-          return (
-            <button
-              key={role.label}
-              onClick={() => setActiveRole(role.label)}
-              style={{ "--role-color": visual.darkColor, "--role-glow": visual.glow }}
-              className={`role-lens-card rounded-lg border p-4 text-left transition ${
-                isActive
-                  ? "border-slate-900 bg-white shadow-2xl shadow-slate-900/12 dark:border-white dark:bg-white/12"
-                  : "border-slate-200 bg-white/78 hover:-translate-y-1 dark:border-white/10 dark:bg-white/7"
-              }`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-lg bg-slate-950 text-white shadow-[0_14px_35px_var(--role-glow)] dark:bg-white dark:text-slate-950">
-                  <Icon size={21} />
-                </span>
-                <span className={`rounded-full px-3 py-1 text-xs font-black ring-1 ${getRoleTone(role.label).badge}`}>
-                  {role.count} repos
-                </span>
-              </div>
-              <div className="role-mini-picture mt-4" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-              <p className="mt-4 text-xs font-black uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
-                {visual.shortLabel}
-              </p>
-              <h3 className="mt-1 text-lg font-black text-slate-950 dark:text-white">{role.label}</h3>
-            </button>
-          );
-        })}
-      </div>
+      <SystemsCockpit activeRole={activeRole} counts={counts} setActiveRole={setActiveRole} />
 
       <AnimatePresence mode="wait">
         <motion.div
