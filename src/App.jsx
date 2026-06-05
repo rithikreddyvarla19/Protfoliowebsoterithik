@@ -303,6 +303,14 @@ function Navbar({ activeSection, isDark, setIsDark, recruiterMode, setRecruiterM
     setOpen(false);
   };
 
+  const showRecruiterSummary = () => {
+    setRecruiterMode(true);
+    setOpen(false);
+    requestAnimationFrame(() => {
+      document.getElementById("recruiter-summary")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/80 bg-white/88 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/82">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
@@ -334,14 +342,14 @@ function Navbar({ activeSection, isDark, setIsDark, recruiterMode, setRecruiterM
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setRecruiterMode((value) => !value)}
+            onClick={showRecruiterSummary}
             className={`hidden rounded-full px-4 py-2 text-sm font-black transition sm:inline-flex ${
               recruiterMode
                 ? "bg-emerald-500 text-slate-950 shadow-glow"
                 : "bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-200"
             }`}
           >
-            Recruiter View
+            Evidence Summary
           </button>
           <button
             onClick={() => setIsDark((value) => !value)}
@@ -378,10 +386,10 @@ function Navbar({ activeSection, isDark, setIsDark, recruiterMode, setRecruiterM
                 </button>
               ))}
               <button
-                onClick={() => setRecruiterMode((value) => !value)}
+                onClick={showRecruiterSummary}
                 className="rounded-lg bg-emerald-500 px-4 py-3 text-left text-sm font-black text-slate-950"
               >
-                Recruiter View {recruiterMode ? "On" : "Off"}
+                Evidence Summary
               </button>
             </div>
           </motion.div>
@@ -432,7 +440,8 @@ function RecruiterPanel({ recruiterMode }) {
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -16 }}
-          className="mx-auto mt-24 max-w-7xl px-4 sm:px-6 lg:px-8"
+          id="recruiter-summary"
+          className="mx-auto mt-24 max-w-7xl scroll-mt-24 px-4 sm:px-6 lg:px-8"
         >
           <div className="rounded-lg border border-emerald-300 bg-white/92 p-4 shadow-glow dark:border-emerald-400/25 dark:bg-black/62 dark:shadow-emerald-950/30">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
