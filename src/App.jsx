@@ -80,6 +80,23 @@ const roleTone = {
 
 const getRoleTone = (role) => roleTone[role] ?? roleTone["Data Engineer"];
 const reviewWorkbookHref = `${import.meta.env.BASE_URL}visitor-review-tracker.xlsx`;
+const proofTickerItems = [
+  "13 public repositories",
+  "Cloud pipelines",
+  "ML lifecycle systems",
+  "RAG evaluation",
+  "Power BI-ready marts",
+  "Data quality checks",
+  "FastAPI scoring",
+  "Snowflake features",
+  "UCF M.S. Computer Science",
+  "4.0 GPA"
+];
+const heroEvidence = [
+  { label: "Public repos", value: "13", note: "Inspectable code, runbooks, docs, tests, and architecture" },
+  { label: "Role tracks", value: "4", note: "Data Engineering, Analytics, BI, and Machine Learning" },
+  { label: "Signal density", value: "High", note: "Designed for fast senior recruiter and hiring manager review" }
+];
 const roleVisuals = {
   "Data Engineer": {
     shortLabel: "DE",
@@ -420,17 +437,17 @@ function RecruiterPanel({ recruiterMode }) {
           exit={{ opacity: 0, y: -16 }}
           className="mx-auto mt-24 max-w-7xl px-4 sm:px-6 lg:px-8"
         >
-          <div className="rounded-lg border border-emerald-300 bg-white/92 p-4 shadow-glow dark:border-emerald-400/25 dark:bg-slate-900/88">
+          <div className="rounded-lg border border-emerald-300 bg-white/92 p-4 shadow-glow dark:border-emerald-400/25 dark:bg-black/62 dark:shadow-emerald-950/30">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div>
                 <p className="section-kicker">Recruiter View</p>
-                <h2 className="mt-2 text-2xl font-black text-slate-950 dark:text-white">
-                  Fast evidence map for data roles
+                <h2 className="mt-2 max-w-sm text-2xl font-black leading-tight text-slate-950 dark:text-white">
+                  Fast evidence map for serious data roles
                 </h2>
               </div>
               <div className="grid gap-2 sm:grid-cols-2 lg:min-w-[520px]">
                 {recruiterHighlights.map((highlight) => (
-                  <div key={highlight} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm font-semibold text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
+                  <div key={highlight} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm font-semibold text-slate-700 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-200">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none text-emerald-600 dark:text-emerald-300" />
                     <span>{highlight}</span>
                   </div>
@@ -441,6 +458,40 @@ function RecruiterPanel({ recruiterMode }) {
         </motion.aside>
       )}
     </AnimatePresence>
+  );
+}
+
+function ProofTicker() {
+  return (
+    <div className="proof-ticker mt-8 overflow-hidden border-y border-slate-200 bg-white/70 py-3 dark:border-white/10 dark:bg-white/[0.04]">
+      <div className="proof-ticker-track flex min-w-max gap-3">
+        {[...proofTickerItems, ...proofTickerItems].map((item, index) => (
+          <span
+            key={`${item}-${index}`}
+            className="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-slate-600 dark:border-white/10 dark:bg-black/40 dark:text-slate-200"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function EvidenceLedger() {
+  return (
+    <motion.div variants={sectionVariants} className="mt-8 grid gap-3 sm:grid-cols-3">
+      {heroEvidence.map((item) => (
+        <div
+          key={item.label}
+          className="rounded-lg border border-slate-200 bg-white/82 p-4 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/[0.055]"
+        >
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{item.label}</p>
+          <div className="mt-3 text-4xl font-black leading-none text-slate-950 dark:text-white">{item.value}</div>
+          <p className="mt-3 text-sm font-semibold leading-6 text-slate-600 dark:text-slate-300">{item.note}</p>
+        </div>
+      ))}
+    </motion.div>
   );
 }
 
@@ -946,23 +997,23 @@ function Hero({ onRoleExplore }) {
   );
 
   return (
-    <section id="home" className="mx-auto flex min-h-screen max-w-7xl scroll-mt-24 flex-col justify-center px-4 pb-16 pt-32 sm:px-6 lg:px-8">
-      <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.95fr]">
+    <section id="home" className="mx-auto flex min-h-screen max-w-7xl scroll-mt-24 flex-col justify-center px-4 pb-16 pt-28 sm:px-6 lg:px-8">
+      <div className="grid items-center gap-10 lg:grid-cols-[1.04fr_0.96fr]">
         <motion.div initial="hidden" animate="show" variants={stagger}>
-          <motion.p variants={sectionVariants} className="mb-4 inline-flex rounded-full border border-slate-300 bg-white/86 px-4 py-2 text-sm font-black text-slate-700 shadow-sm dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
-            Orlando, FL based Data Engineer
+          <motion.p variants={sectionVariants} className="mb-5 inline-flex rounded-full border border-slate-300 bg-white/86 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-slate-700 shadow-sm dark:border-white/10 dark:bg-white/[0.07] dark:text-slate-200">
+            UCF M.S. Computer Science · Orlando, FL
           </motion.p>
-          <motion.h1 variants={sectionVariants} className="max-w-4xl text-5xl font-black leading-tight text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
-            Rithik Reddy Varla
+          <motion.h1 variants={sectionVariants} className="max-w-5xl text-4xl font-black leading-[0.96] text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
+            Rithik Reddy Varla builds data systems recruiters can inspect.
           </motion.h1>
-          <motion.p variants={sectionVariants} className="mt-4 text-2xl font-black text-slate-700 dark:text-slate-200">
+          <motion.p variants={sectionVariants} className="mt-6 text-2xl font-black text-slate-700 dark:text-slate-200">
             Data Engineer | Data Scientist | ML Engineer
           </motion.p>
           <motion.p variants={sectionVariants} className="mt-4 text-xl font-bold text-slate-600 dark:text-slate-300">
             Production-style data platforms built by a <TypingText />
           </motion.p>
           <motion.p variants={sectionVariants} className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-            I build inspectable repositories across cloud data engineering, analytics, BI delivery, MLOps, RAG evaluation, and model monitoring. Each project is designed to show architecture, execution, tests, documentation, and business-ready outputs.
+            A portfolio built like a technical audit: cloud data pipelines, analytics marts, BI specifications, ML lifecycle platforms, RAG evaluation, and model monitoring with repos that show the work behind the claims.
           </motion.p>
           <motion.div variants={sectionVariants} className="mt-8 flex flex-wrap gap-3">
             <a href="#projects" className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-black text-white shadow-glow transition hover:-translate-y-1 dark:bg-white dark:text-slate-950">
@@ -974,6 +1025,7 @@ function Hero({ onRoleExplore }) {
             <IconLink href={contactLinks.github} icon={Github} onClick={() => trackEvent("contact_click", { contact_method: "github" })}>GitHub</IconLink>
             <IconLink href={contactLinks.linkedin} icon={Linkedin} onClick={() => trackEvent("contact_click", { contact_method: "linkedin" })}>LinkedIn</IconLink>
           </motion.div>
+          <EvidenceLedger />
         </motion.div>
 
         <RoleOrbitExperience
@@ -983,6 +1035,7 @@ function Hero({ onRoleExplore }) {
           setActiveRole={setActiveRole}
         />
       </div>
+      <ProofTicker />
     </section>
   );
 }
@@ -1634,7 +1687,7 @@ function Contact() {
 }
 
 export default function App() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [recruiterMode, setRecruiterMode] = useState(true);
   const [activeSection, setActiveSection] = useState("home");
   const [projectFilter, setProjectFilter] = useState("All");
@@ -1673,9 +1726,9 @@ export default function App() {
       <AnimatedBackground />
       <motion.div className="fixed left-0 right-0 top-0 z-[80] h-1 origin-left bg-emerald-400" style={{ scaleX }} />
       <Navbar activeSection={activeSection} isDark={isDark} setIsDark={setIsDark} recruiterMode={recruiterMode} setRecruiterMode={setRecruiterMode} />
-      <RecruiterPanel recruiterMode={recruiterMode} />
       <main>
         <Hero onRoleExplore={exploreRoleProjects} />
+        <RecruiterPanel recruiterMode={recruiterMode} />
         <About />
         <Education />
         <Skills />
