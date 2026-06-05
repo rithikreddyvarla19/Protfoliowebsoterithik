@@ -26,6 +26,37 @@ textarea {
   -webkit-tap-highlight-color: transparent;
 }
 
+.animated-gradient-text {
+  display: inline-block;
+  color: transparent;
+  background:
+    linear-gradient(
+      100deg,
+      #38bdf8 0%,
+      #22d3ee 18%,
+      #6ee7b7 36%,
+      #facc15 54%,
+      #fb923c 72%,
+      #60a5fa 90%,
+      #38bdf8 100%
+    );
+  background-clip: text;
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  animation: headline-gradient-shift 7s ease-in-out infinite;
+}
+
+@keyframes headline-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 .proof-ticker {
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
@@ -166,6 +197,11 @@ textarea {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .animated-gradient-text {
+    animation: none;
+    background-position: 45% 50%;
+  }
+
   .proof-ticker-track {
     animation: none;
   }

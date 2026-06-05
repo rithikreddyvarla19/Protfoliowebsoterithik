@@ -1004,7 +1004,7 @@ function Hero({ onRoleExplore }) {
             UCF M.S. Computer Science · Orlando, FL
           </motion.p>
           <motion.h1 variants={sectionVariants} className="max-w-5xl text-4xl font-black leading-[0.96] text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
-            Rithik Reddy Varla builds data systems recruiters can inspect.
+            Rithik Reddy Varla builds <span className="animated-gradient-text">data systems</span> recruiters can inspect.
           </motion.h1>
           <motion.p variants={sectionVariants} className="mt-6 text-2xl font-black text-slate-700 dark:text-slate-200">
             Data Engineer | Data Scientist | ML Engineer
