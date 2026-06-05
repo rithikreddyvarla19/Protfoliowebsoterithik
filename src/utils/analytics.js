@@ -1,5 +1,6 @@
 const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
 const clarityProjectId = import.meta.env.VITE_CLARITY_PROJECT_ID;
+const hubSpotPortalId = import.meta.env.VITE_HUBSPOT_PORTAL_ID;
 
 export function initAnalytics() {
   if (typeof window === "undefined") return;
@@ -31,6 +32,15 @@ export function initAnalytics() {
     script.async = true;
     script.src = `https://www.clarity.ms/tag/${clarityProjectId}`;
     document.head.appendChild(script);
+  }
+
+  if (hubSpotPortalId) {
+    const script = document.createElement("script");
+    script.async = true;
+    script.defer = true;
+    script.id = "hs-script-loader";
+    script.src = `https://js.hs-scripts.com/${hubSpotPortalId}.js`;
+    document.body.appendChild(script);
   }
 }
 
