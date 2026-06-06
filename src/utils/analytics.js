@@ -39,7 +39,7 @@ export function initAnalytics() {
     script.async = true;
     script.defer = true;
     script.id = "hs-script-loader";
-    script.src = `https://js.hs-scripts.com/${hubSpotPortalId}.js`;
+    script.src = `https://js-na2.hs-scripts.com/${hubSpotPortalId}.js`;
     document.body.appendChild(script);
   }
 }
