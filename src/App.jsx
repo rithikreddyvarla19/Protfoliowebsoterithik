@@ -94,7 +94,7 @@ const proofTickerItems = [
 const heroEvidence = [
   { label: "Public repos", value: "13", note: "Inspectable code, runbooks, docs, tests, and architecture" },
   { label: "Role tracks", value: "4", note: "Data Engineering, Analytics, BI, and Machine Learning" },
-  { label: "Signal density", value: "High", note: "Designed for fast senior recruiter and hiring manager review" }
+  { label: "Signal density", value: "High", note: "Designed for fast senior hiring manager review" }
 ];
 const roleVisuals = {
   "Data Engineer": {
@@ -446,7 +446,7 @@ function RecruiterPanel({ recruiterMode }) {
           <div className="rounded-lg border border-emerald-300 bg-white/92 p-4 shadow-glow dark:border-emerald-400/25 dark:bg-black/62 dark:shadow-emerald-950/30">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div>
-                <p className="section-kicker">Recruiter View</p>
+                <p className="section-kicker">Evidence View</p>
                 <h2 className="mt-2 max-w-sm text-2xl font-black leading-tight text-slate-950 dark:text-white">
                   Fast evidence map for serious data roles
                 </h2>
@@ -651,7 +651,7 @@ function Hero({ onRoleExplore }) {
             UCF M.S. Computer Science · Orlando, FL
           </motion.p>
           <motion.h1 variants={sectionVariants} className="max-w-5xl text-4xl font-black leading-[0.96] text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
-            I build <span className="animated-gradient-text">data systems</span> recruiters can inspect.
+            I build <span className="animated-gradient-text">data systems</span> you can inspect.
           </motion.h1>
           <motion.p variants={sectionVariants} className="mt-6 text-2xl font-black text-slate-700 dark:text-slate-200">
             Data Engineer | Data Scientist | ML Engineer
@@ -1188,7 +1188,7 @@ function Reviews() {
                 value={review.role}
                 onChange={(event) => setReview({ ...review, role: event.target.value })}
                 className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-950"
-                placeholder="Recruiter / Company"
+                placeholder="Hiring manager / Company"
               />
             </label>
           </div>
@@ -1304,7 +1304,7 @@ function Contact() {
                 value={form[field]}
                 onChange={(event) => setForm({ ...form, [field]: event.target.value })}
                 className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-950"
-                placeholder={field === "email" ? "recruiter@company.com" : "Your name"}
+                placeholder={field === "email" ? "hiring.manager@company.com" : "Your name"}
               />
               {submitted && errors[field] && <span className="mt-1 block text-sm font-semibold text-rose-500">{errors[field]}</span>}
             </label>
@@ -1384,7 +1384,7 @@ export default function App() {
         <Contact />
       </main>
       <footer className="border-t border-slate-200 px-4 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">
-        Built for recruiters evaluating data engineering, data science, and ML engineering work.
+        Built for hiring teams evaluating data engineering, data science, and ML engineering work.
       </footer>
     </>
   );

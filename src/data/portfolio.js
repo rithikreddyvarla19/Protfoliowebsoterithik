@@ -334,7 +334,7 @@ export const projects = [
     primaryRole: "Data Analytics",
     roles: ["Data Analytics"],
     github: "https://github.com/rithikreddyvarla19/ResumeOptimizerPro",
-    summary: "React platform that analyzes resume and job description alignment, extracts keywords, estimates ATS fit, compares missing skills, and generates recruiter-ready rewrite suggestions locally.",
+    summary: "React platform that analyzes resume and job description alignment, extracts keywords, estimates ATS fit, compares missing skills, and generates presentation-ready rewrite suggestions locally.",
     recruiterRead: "Shows user-facing product thinking plus practical text analysis, scoring logic, local privacy controls, and polished workflow design.",
     metrics: ["ATS scoring", "Keyword gap analysis", "Local-only prototype"],
     tech: ["React", "Vite", "Tailwind", "Framer Motion", "JavaScript", "Local Storage"],
