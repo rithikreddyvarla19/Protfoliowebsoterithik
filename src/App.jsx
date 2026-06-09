@@ -666,9 +666,6 @@ function Hero({ onRoleExplore }) {
             <a href="#projects" className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-black text-white shadow-glow transition hover:-translate-y-1 dark:bg-white dark:text-slate-950">
               <Target size={17} /> View Projects
             </a>
-            <a href={`mailto:${contactLinks.email}?subject=Portfolio%20Resume%20Request`} className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-black text-slate-800 transition hover:-translate-y-1 dark:border-white/15 dark:bg-white/10 dark:text-white">
-              <Mail size={17} /> Request Resume
-            </a>
             <IconLink href={contactLinks.github} icon={Github} onClick={() => trackEvent("contact_click", { contact_method: "github" })}>GitHub</IconLink>
             <IconLink href={contactLinks.linkedin} icon={Linkedin} onClick={() => trackEvent("contact_click", { contact_method: "linkedin" })}>LinkedIn</IconLink>
           </motion.div>
