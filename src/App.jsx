@@ -651,7 +651,7 @@ function Hero({ onRoleExplore }) {
             UCF M.S. Computer Science · Orlando, FL
           </motion.p>
           <motion.h1 variants={sectionVariants} className="max-w-5xl text-4xl font-black leading-[0.96] text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
-            Rithik Reddy Varla builds <span className="animated-gradient-text">data systems</span> recruiters can inspect.
+            I build <span className="animated-gradient-text">data systems</span> recruiters can inspect.
           </motion.h1>
           <motion.p variants={sectionVariants} className="mt-6 text-2xl font-black text-slate-700 dark:text-slate-200">
             Data Engineer | Data Scientist | ML Engineer
@@ -660,7 +660,7 @@ function Hero({ onRoleExplore }) {
             Production-style data platforms built by a <TypingText />
           </motion.p>
           <motion.p variants={sectionVariants} className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-            A portfolio built like a technical audit: cloud data pipelines, analytics marts, BI specifications, ML lifecycle platforms, RAG evaluation, and model monitoring with repos that show the work behind the claims.
+            I designed this portfolio as a technical audit of my work: cloud data pipelines, analytics marts, BI specifications, ML lifecycle platforms, RAG evaluation, and model monitoring with repos that show the engineering behind each claim.
           </motion.p>
           <motion.div variants={sectionVariants} className="mt-8 flex flex-wrap gap-3">
             <a href="#projects" className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-black text-white shadow-glow transition hover:-translate-y-1 dark:bg-white dark:text-slate-950">
