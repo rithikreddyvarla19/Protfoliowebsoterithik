@@ -291,6 +291,58 @@ export const projects = [
       "Generates synthetic subscription and ecommerce data, cleans and validates it, loads SQLite analysis tables, runs SQL and Python analytics, exports KPI summaries, dashboard extracts, Excel workbooks, visuals, and business insight documentation."
   },
   {
+    title: "Event-Driven Customer Events API",
+    primaryRole: "Data Engineer",
+    roles: ["Data Engineer", "Data Analytics", "BI Analyst"],
+    github: "https://github.com/rithikreddyvarla19/event-driven-customer-events-api",
+    summary: "FastAPI event ingestion service with idempotent processing, PostgreSQL persistence, Redpanda/Kafka-compatible streaming, and warehouse-style funnel, churn, and LTV analytics.",
+    recruiterRead: "Strong backend data engineering signal: event contracts, duplicate rejection, stream processing simulation, customer timelines, and analytics-ready warehouse tables.",
+    metrics: ["Idempotent event API", "Kafka-compatible local stack", "Funnel, churn, LTV endpoints"],
+    tech: ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "Redpanda", "Docker", "pytest"],
+    proof: ["At-least-once processing design", "Snowflake-style fact/dim SQL", "Customer timeline API"],
+    details:
+      "Builds a customer event platform for product and marketing analytics, validating incoming events, preventing duplicate event IDs, simulating stream ingestion, and exposing customer timelines plus funnel, churn, and lifetime-value endpoints."
+  },
+  {
+    title: "Argo Advertising Metrics ETL Platform",
+    primaryRole: "Data Engineer",
+    roles: ["Data Engineer", "Data Analytics", "BI Analyst"],
+    github: "https://github.com/rithikreddyvarla19/argo-orchestrated-etl-advertising-metrics",
+    summary: "Advertising metrics ETL platform that consolidates eight mock ad sources into PostgreSQL-backed Snowflake-style marts with Argo Workflow manifests and API reporting.",
+    recruiterRead: "Shows orchestration depth through staged extraction, validation, normalization, deduplication, ROI calculations, quality gates, marts, and BI/API serving.",
+    metrics: ["8 ad source connectors", "Argo workflow manifests", "ROI and quality APIs"],
+    tech: ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "Argo Workflows", "Docker", "SQL"],
+    proof: ["Campaign/channel marts", "Quality report endpoint", "Local fallback runner"],
+    details:
+      "Models a marketing data platform that brings together fragmented ad metrics from Google, Meta, TikTok, LinkedIn, X, Snapchat, Pinterest, and display sources, then publishes campaign, channel, ROI, and quality outputs."
+  },
+  {
+    title: "Agentic AI Marketing Insights Platform",
+    primaryRole: "Machine Learning",
+    roles: ["Machine Learning", "Data Analytics", "Data Engineer"],
+    github: "https://github.com/rithikreddyvarla19/agentic-ai-marketing-insights-platform",
+    summary: "FastAPI platform that orchestrates local mock AI agents for campaign KPI review, anomaly detection, SQL-backed analysis, memory, and budget recommendations.",
+    recruiterRead: "Adds applied AI engineering signal with agent orchestration, KPI tools, anomaly detection, persisted insight memory, API workflows, and deployment manifests.",
+    metrics: ["Planner + insight agents", "Anomaly detection", "Kubernetes and Helm manifests"],
+    tech: ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "Docker", "pytest", "Kubernetes"],
+    proof: ["Campaign analysis API", "Persisted agent memory", "Budget recommendation workflow"],
+    details:
+      "Ingests ad, web, and CRM campaign signals, calculates CTR, conversion rate, CPA, and spend metrics, then coordinates planner, SQL, KPI, anomaly, insight, budget, and memory steps for automated marketing recommendations."
+  },
+  {
+    title: "Legal Operations Matter Analytics",
+    primaryRole: "BI Analyst",
+    roles: ["BI Analyst", "Data Analytics", "Data Engineer"],
+    github: "https://github.com/rithikreddyvarla19/legal-operations-matter-analytics",
+    summary: "Synthetic legal operations analytics project with SQL Server-compatible modeling, automated QA, Tableau-ready extracts, workload KPIs, billing metrics, and dashboard documentation.",
+    recruiterRead: "High-signal BI and analytics sample: data modeling, QA automation, KPI definitions, Tableau wireframes, executive reporting, and stakeholder trust documentation.",
+    metrics: ["300K+ processed records", "SQL QA checks", "Tableau-ready extracts"],
+    tech: ["Python", "SQL Server", "Pandas", "Tableau Specs", "Alteryx Simulation", "CSV", "QA Automation"],
+    proof: ["Matter lifecycle model", "Billing realization KPIs", "Dashboard wireframes"],
+    details:
+      "Generates deterministic synthetic matter, attorney, client, billing, write-off, department, practice-area, and status-history data, then standardizes it into a reporting model for SLA, workload, aging, billing, and quality analytics."
+  },
+  {
     title: "Child Welfare India Analytics",
     primaryRole: "Data Analytics",
     roles: ["Data Analytics", "BI Analyst"],
@@ -358,7 +410,7 @@ export const projects = [
 ];
 
 export const metrics = [
-  { label: "Public portfolio repos", value: "13", icon: Database },
+  { label: "Public portfolio repos", value: "17", icon: Database },
   { label: "Cloud ecosystems", value: "3", icon: Cloud },
   { label: "Project categories", value: "4", icon: Network },
   { label: "Graduate GPA", value: "4.0", icon: Award },
