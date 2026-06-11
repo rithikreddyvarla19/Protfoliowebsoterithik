@@ -5,6 +5,7 @@ import {
   Briefcase,
   BrainCircuit,
   CheckCircle2,
+  Database,
   Download,
   ExternalLink,
   FileSpreadsheet,
@@ -109,6 +110,38 @@ const openToRoles = [
   "Data Scientist",
   "ML Engineer",
   "Analytics Engineer"
+];
+const proofSignals = [
+  {
+    label: "Architecture",
+    icon: Layers3,
+    note: "Lakehouse layers, event flows, agent workflows, and API boundaries are documented."
+  },
+  {
+    label: "Data Models",
+    icon: Database,
+    note: "Fact tables, dimensions, feature contracts, marts, and dashboard-ready extracts are represented."
+  },
+  {
+    label: "Quality",
+    icon: CheckCircle2,
+    note: "Validation rules, QA checks, drift metrics, duplicate handling, and monitoring paths are visible."
+  },
+  {
+    label: "Serving",
+    icon: ServerCog,
+    note: "FastAPI endpoints, BI outputs, scoring services, and operational read paths show delivery thinking."
+  },
+  {
+    label: "Analytics",
+    icon: BarChart3,
+    note: "KPIs, cohorts, funnels, ROI, churn, LTV, SLA, workload, and executive reporting are covered."
+  },
+  {
+    label: "AI/ML",
+    icon: BrainCircuit,
+    note: "Feature engineering, MLflow, monitoring, RAG evaluation, anomaly detection, and agent logic are included."
+  }
 ];
 const roleVisuals = {
   "Data Engineer": {
@@ -662,7 +695,7 @@ function Hero({ onRoleExplore }) {
       <div className="grid items-center gap-10 lg:grid-cols-[1.04fr_0.96fr]">
         <motion.div initial="hidden" animate="show" variants={stagger}>
           <motion.p variants={sectionVariants} className="mb-5 inline-flex rounded-full border border-slate-300 bg-white/86 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-slate-700 shadow-sm dark:border-white/10 dark:bg-white/[0.07] dark:text-slate-200">
-            UCF M.S. Computer Science · Orlando, FL
+            UCF M.S. Computer Science | Orlando, FL
           </motion.p>
           <motion.h1 variants={sectionVariants} className="max-w-5xl text-4xl font-black leading-[0.96] text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
             I build <span className="animated-gradient-text">data systems</span> you can inspect.
@@ -1008,6 +1041,36 @@ function FeaturedSystems({ onSelect }) {
   );
 }
 
+function ProofMatrix() {
+  return (
+    <div className="mb-10 rounded-lg border border-slate-200 bg-white/88 p-5 shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-white/10">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="section-kicker">Evidence Matrix</p>
+          <h3 className="mt-2 text-2xl font-black text-slate-950 dark:text-white">What the project library proves.</h3>
+        </div>
+        <span className="w-fit rounded-full bg-slate-100 px-4 py-2 text-sm font-black text-slate-600 dark:bg-white/10 dark:text-slate-200">
+          Architecture to delivery
+        </span>
+      </div>
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {proofSignals.map((signal) => {
+          const Icon = signal.icon;
+          return (
+            <div key={signal.label} className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-950/45">
+              <div className="flex items-center gap-3">
+                <Icon className="h-5 w-5 text-emerald-600 dark:text-emerald-300" />
+                <h4 className="font-black text-slate-950 dark:text-white">{signal.label}</h4>
+              </div>
+              <p className="mt-3 text-sm font-semibold leading-6 text-slate-600 dark:text-slate-300">{signal.note}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function ProjectBrief({ project }) {
   if (!project) return null;
   const tone = getRoleTone(project.primaryRole);
@@ -1093,7 +1156,7 @@ function Projects({ filter, setFilter }) {
   return (
     <section id="projects" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
       <div className="mb-8 grid gap-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-        <SectionHeading kicker="Project Portfolio" title="Four role filters, seventeen public repositories, direct proof." />
+        <SectionHeading kicker="Project Library" title="Seventeen public repositories, organized by role and evidence." />
         <div className="grid gap-3">
           <label className="relative block">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -1124,6 +1187,7 @@ function Projects({ filter, setFilter }) {
       </div>
 
       <FeaturedSystems onSelect={setActiveProject} />
+      <ProofMatrix />
 
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <motion.div layout className="grid gap-5 md:grid-cols-2">
