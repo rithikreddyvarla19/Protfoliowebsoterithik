@@ -56,32 +56,42 @@ export const skillGroups = [
   {
     title: "Programming",
     icon: Code2,
-    skills: ["Python", "SQL", "Java", "JavaScript", "PySpark"]
+    skills: ["Python", "SQL", "PySpark", "JavaScript", "TypeScript", "Java"]
   },
   {
     title: "Data Engineering",
     icon: Workflow,
-    skills: ["ETL/ELT", "Lakehouse Design", "Data Modeling", "Data Quality", "Pipeline Orchestration"]
+    skills: ["ETL/ELT", "Lakehouse Design", "Event Ingestion", "Data Modeling", "Data Quality", "Pipeline Orchestration"]
   },
   {
     title: "Cloud Platforms",
     icon: Cloud,
-    skills: ["AWS", "Azure Databricks", "Google Cloud", "Snowflake", "BigQuery", "Redshift"]
+    skills: ["AWS", "Azure Databricks", "Google Cloud", "Snowflake", "BigQuery", "Redshift", "AWS ECS"]
   },
   {
     title: "Analytics and BI",
     icon: LineChart,
-    skills: ["Power BI", "Tableau", "KPI Design", "Cohort Analysis", "Dashboard Specs", "Stakeholder Reporting"]
+    skills: ["Power BI", "Tableau", "SQL Server", "KPI Design", "Cohort Analysis", "Dashboard Specs", "Stakeholder Reporting"]
   },
   {
     title: "Machine Learning",
     icon: Sparkles,
-    skills: ["MLflow", "SageMaker", "RAG Evaluation", "Drift Detection", "XGBoost", "Model Monitoring"]
+    skills: ["MLflow", "SageMaker", "RAG Evaluation", "Drift Detection", "XGBoost", "LightGBM", "Model Monitoring"]
   },
   {
     title: "Delivery",
     icon: ShieldCheck,
-    skills: ["Docker", "Terraform", "GitHub Actions", "FastAPI", "Streamlit", "Testing"]
+    skills: ["FastAPI", "Docker", "Kubernetes", "Helm", "Terraform", "GitHub Actions", "pytest"]
+  },
+  {
+    title: "Backend and APIs",
+    icon: Database,
+    skills: ["FastAPI", "SQLAlchemy", "PostgreSQL", "Redpanda", "Kafka-compatible Streams", "Redis", "REST APIs"]
+  },
+  {
+    title: "Orchestration and DataOps",
+    icon: ShieldCheck,
+    skills: ["Airflow", "Argo Workflows", "dbt", "Apache Beam", "CI/CD", "Runbooks", "QA Automation"]
   }
 ];
 
